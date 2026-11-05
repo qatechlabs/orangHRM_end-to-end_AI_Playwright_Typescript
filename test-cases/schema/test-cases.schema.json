@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/qatechlabs/orangHRM_end-to-end_AI_Playwright_Typescript/test-cases.schema.json",
+  "title": "OrangeHRM manual test case suite (one file per module)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["module", "moduleCode", "source", "version", "generatedBy", "testCases"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "module": { "type": "string", "description": "Module name, e.g. PIM" },
+    "moduleCode": { "type": "string", "pattern": "^[A-Z]{2,6}$", "description": "Prefix used in test case IDs" },
+    "source": { "type": "string", "description": "BRD the cases were derived from" },
+    "version": { "type": "string" },
+    "generatedBy": { "type": "string" },
+    "notes": { "type": "array", "items": { "type": "string" } },
+    "testCases": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/testCase" }
+    }
+  },
+  "definitions": {
+    "testCase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "layer", "type", "priority", "feature", "requirementIds", "preconditions", "steps", "expectedResult", "automation"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Z]{2,6}-(UI|API)-\\d{3}$" },
+        "title": { "type": "string", "minLength": 10, "maxLength": 150 },
+        "layer": { "enum": ["UI", "API"] },
+        "type": { "enum": ["Positive", "Negative", "Edge"] },
+        "priority": { "enum": ["P1", "P2", "P3"] },
+        "feature": { "type": "string", "description": "Feature / screen; becomes the spec file and Allure feature" },
+        "requirementIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "pattern": "^[A-Z]{2,6}-(FR-\\d{3}(-AC\\d+)?|VAL-\\d{3}|BR-\\d{2}|NFR-\\d{2}|E2E-\\d{2})$" }
+        },
+        "roles": { "type": "array", "items": { "enum": ["Admin", "Supervisor", "ESS", "Anonymous"] } },
+        "preconditions": { "type": "array", "items": { "type": "string" } },
+        "testData": { "type": "object" },
+        "api": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["method", "endpoint", "expectedStatus"],
+          "properties": {
+            "method": { "enum": ["GET", "POST", "PUT", "PATCH", "DELETE"] },
+            "endpoint": { "type": "string", "pattern": "^/" },
+            "expectedStatus": { "type": "integer" }
+          }
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["action", "expected"],
+            "properties": { "action": { "type": "string" }, "expected": { "type": "string" } }
+          }
+        },
+        "expectedResult": { "type": "string" },
+        "tags": { "type": "array", "items": { "type": "string", "pattern": "^@[a-z0-9-]+$" } },
+        "automation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status"],
+          "properties": {
+            "status": { "enum": ["Automated", "Planned", "Manual"] },
+            "spec": { "type": "string" },
+            "reason": { "type": "string", "description": "Why a case stays manual" }
+          }
+        }
+      },
+      "if": { "properties": { "layer": { "const": "API" } } },
+      "then": { "required": ["api"] }
+    }
+  }
+}

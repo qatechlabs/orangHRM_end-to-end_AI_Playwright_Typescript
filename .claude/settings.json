@@ -1,0 +1,16 @@
+{
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": ["playwright-test", "playwright"],
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(npx playwright test*)",
+      "Bash(npx tsc --noEmit*)",
+      "Bash(npx eslint*)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "mcp__playwright-test",
+      "mcp__playwright"
+    ]
+  }
+}

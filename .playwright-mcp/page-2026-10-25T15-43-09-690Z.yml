@@ -1,0 +1,287 @@
+- generic [ref=f2e3]:
+  - generic:
+    - complementary [ref=f2e4]:
+      - navigation "Sidepanel" [ref=f2e5]:
+        - generic [ref=f2e6]:
+          - link [ref=f2e7] [cursor=pointer]:
+            - /url: https://www.orangehrm.com/
+            - img "client brand banner" [ref=f2e9]
+          - text: 
+        - generic [ref=f2e10]:
+          - generic [ref=f2e11]:
+            - generic [ref=f2e12]:
+              - textbox "Search" [ref=f2e15]
+              - button "" [ref=f2e16] [cursor=pointer]
+            - separator [ref=f2e18]
+          - list [ref=f2e19]:
+            - listitem [ref=f2e20]:
+              - link "Admin" [ref=f2e21] [cursor=pointer]:
+                - /url: /web/index.php/admin/viewAdminModule
+            - listitem [ref=f2e25]:
+              - link "PIM" [ref=f2e26] [cursor=pointer]:
+                - /url: /web/index.php/pim/viewPimModule
+            - listitem [ref=f2e41]:
+              - link "Leave" [ref=f2e42] [cursor=pointer]:
+                - /url: /web/index.php/leave/viewLeaveModule
+            - listitem [ref=f2e46]:
+              - link "Time" [ref=f2e47] [cursor=pointer]:
+                - /url: /web/index.php/time/viewTimeModule
+            - listitem [ref=f2e54]:
+              - link "Recruitment" [ref=f2e55] [cursor=pointer]:
+                - /url: /web/index.php/recruitment/viewRecruitmentModule
+            - listitem [ref=f2e62]:
+              - link "My Info" [ref=f2e63] [cursor=pointer]:
+                - /url: /web/index.php/pim/viewMyDetails
+            - listitem [ref=f2e70]:
+              - link "Performance" [ref=f2e71] [cursor=pointer]:
+                - /url: /web/index.php/performance/viewPerformanceModule
+            - listitem [ref=f2e80]:
+              - link "Dashboard" [ref=f2e81] [cursor=pointer]:
+                - /url: /web/index.php/dashboard/index
+            - listitem [ref=f2e85]:
+              - link "Directory" [ref=f2e86] [cursor=pointer]:
+                - /url: /web/index.php/directory/viewDirectory
+            - listitem [ref=f2e90]:
+              - link "Maintenance" [ref=f2e91] [cursor=pointer]:
+                - /url: /web/index.php/maintenance/viewMaintenanceModule
+            - listitem [ref=f2e96]:
+              - link "Claim" [ref=f2e97] [cursor=pointer]:
+                - /url: /web/index.php/claim/viewClaimModule
+            - listitem [ref=f2e105]:
+              - link "Buzz" [ref=f2e106] [cursor=pointer]:
+                - /url: /web/index.php/buzz/viewBuzz
+    - banner [ref=f2e110]:
+      - generic [ref=f2e111]:
+        - generic [ref=f2e112]:
+          - text: 
+          - heading "PIM" [level=6] [ref=f2e114]
+        - link [ref=f2e116]:
+          - /url: https://orangehrm.com/open-source/upgrade-to-advanced
+          - button "Upgrade" [ref=f2e117] [cursor=pointer]
+        - list [ref=f2e123]:
+          - listitem [ref=f2e124]:
+            - generic [ref=f2e125] [cursor=pointer]:
+              - img "profile picture" [ref=f2e126]
+              - paragraph [ref=f2e127]: John Doe
+              - generic [ref=f2e128]: 
+      - navigation "Topbar Menu" [ref=f2e130]:
+        - list [ref=f2e131]:
+          - listitem [ref=f2e132] [cursor=pointer]:
+            - generic [ref=f2e133]:
+              - text: Configuration
+              - generic [ref=f2e134]: 
+          - listitem [ref=f2e135] [cursor=pointer]:
+            - link "Employee List" [ref=f2e136]:
+              - /url: "#"
+          - listitem [ref=f2e137] [cursor=pointer]:
+            - link "Add Employee" [ref=f2e138]:
+              - /url: "#"
+          - listitem [ref=f2e139] [cursor=pointer]:
+            - link "Reports" [ref=f2e140]:
+              - /url: "#"
+          - button "" [ref=f2e142] [cursor=pointer]
+  - generic [ref=f2e144]:
+    - generic [ref=f2e148]:
+      - generic [ref=f2e149]:
+        - generic [ref=f2e150]:
+          - heading "Plan PlanAutoP3A" [level=6] [ref=f2e152]
+          - img "profile picture" [ref=f2e155] [cursor=pointer]
+        - tablist [ref=f2e156]:
+          - tab [ref=f2e157]:
+            - link "Personal Details" [ref=f2e158] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewPersonalDetails/empNumber/296
+          - tab [ref=f2e159]:
+            - link "Contact Details" [ref=f2e160] [cursor=pointer]:
+              - /url: /web/index.php/pim/contactDetails/empNumber/296
+          - tab [ref=f2e161]:
+            - link "Emergency Contacts" [ref=f2e162] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewEmergencyContacts/empNumber/296
+          - tab [ref=f2e163]:
+            - link "Dependents" [ref=f2e164] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewDependents/empNumber/296
+          - tab [ref=f2e165]:
+            - link "Immigration" [ref=f2e166] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewImmigration/empNumber/296
+          - tab [ref=f2e167]:
+            - link "Job" [ref=f2e168] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewJobDetails/empNumber/296
+          - tab [ref=f2e169]:
+            - link "Salary" [ref=f2e170] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewSalaryList/empNumber/296
+          - tab [ref=f2e171]:
+            - link "Report-to" [ref=f2e172] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewReportToDetails/empNumber/296
+          - tab [ref=f2e173]:
+            - link "Qualifications" [ref=f2e174] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewQualifications/empNumber/296
+          - tab [ref=f2e175]:
+            - link "Memberships" [ref=f2e176] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewMemberships/empNumber/296
+      - generic [ref=f2e177]:
+        - generic [ref=f2e178]:
+          - heading "Personal Details" [level=6] [ref=f2e179]
+          - separator [ref=f2e180]
+          - generic [ref=f2e181]:
+            - generic [ref=f2e185]:
+              - generic [ref=f2e186]: Employee Full Name*
+              - generic [ref=f2e188]:
+                - textbox "First Name" [ref=f2e191]: Plan
+                - textbox "Middle Name" [ref=f2e194]
+                - textbox "Last Name" [ref=f2e197]: PlanAutoP3A
+            - separator [ref=f2e198]
+            - generic [ref=f2e199]:
+              - generic [ref=f2e200]:
+                - generic [ref=f2e202]:
+                  - generic [ref=f2e203]: Employee Id
+                  - textbox [ref=f2e206]: "0497"
+                - generic [ref=f2e208]:
+                  - generic [ref=f2e209]: Other Id
+                  - textbox [ref=f2e212]
+              - generic [ref=f2e213]:
+                - generic [ref=f2e215]:
+                  - generic [ref=f2e216]: Driver's License Number
+                  - textbox [ref=f2e219]
+                - generic [ref=f2e221]:
+                  - generic [ref=f2e222]: License Expiry Date
+                  - generic [ref=f2e226]:
+                    - textbox "yyyy-dd-mm" [ref=f2e227]
+                    - generic [ref=f2e228] [cursor=pointer]: 
+            - separator [ref=f2e229]
+            - generic [ref=f2e230]:
+              - generic [ref=f2e231]:
+                - generic [ref=f2e233]:
+                  - generic [ref=f2e234]: Nationality
+                  - generic [ref=f2e238] [cursor=pointer]:
+                    - generic [ref=f2e239]: Indian
+                    - generic [ref=f2e240]: 
+                - generic [ref=f2e243]:
+                  - generic [ref=f2e244]: Marital Status
+                  - generic [ref=f2e248] [cursor=pointer]:
+                    - generic [ref=f2e249]: Married
+                    - generic [ref=f2e250]: 
+              - generic [ref=f2e252]:
+                - generic [ref=f2e254]:
+                  - generic [ref=f2e255]: Date of Birth
+                  - generic [ref=f2e258]:
+                    - generic [ref=f2e259]:
+                      - textbox "yyyy-dd-mm" [active] [ref=f2e260]
+                      - generic [ref=f2e261] [cursor=pointer]: 
+                    - generic [ref=f2e741]:
+                      - generic [ref=f2e742]:
+                        - button "" [ref=f2e743] [cursor=pointer]
+                        - list [ref=f2e745]:
+                          - listitem [ref=f2e746] [cursor=pointer]:
+                            - generic [ref=f2e747]:
+                              - paragraph [ref=f2e748]: October
+                              - generic [ref=f2e749]: 
+                          - listitem [ref=f2e750] [cursor=pointer]:
+                            - generic [ref=f2e751]:
+                              - paragraph [ref=f2e752]: "2026"
+                              - generic [ref=f2e753]: 
+                        - button "" [ref=f2e754] [cursor=pointer]
+                      - generic [ref=f2e756]:
+                        - generic [ref=f2e757]: S
+                        - generic [ref=f2e758]: M
+                        - generic [ref=f2e759]: T
+                        - generic [ref=f2e760]: W
+                        - generic [ref=f2e761]: T
+                        - generic [ref=f2e762]: F
+                        - generic [ref=f2e763]: S
+                      - generic [ref=f2e764]:
+                        - generic [ref=f2e765]: "1"
+                        - generic [ref=f2e767]: "2"
+                        - generic [ref=f2e769]: "3"
+                        - generic [ref=f2e771]: "4"
+                        - generic [ref=f2e773]: "5"
+                        - generic [ref=f2e775]: "6"
+                        - generic [ref=f2e777]: "7"
+                        - generic [ref=f2e779]: "8"
+                        - generic [ref=f2e781]: "9"
+                        - generic [ref=f2e783]: "10"
+                        - generic [ref=f2e785]: "11"
+                        - generic [ref=f2e787]: "12"
+                        - generic [ref=f2e789]: "13"
+                        - generic [ref=f2e791]: "14"
+                        - generic [ref=f2e793]: "15"
+                        - generic [ref=f2e795]: "16"
+                        - generic [ref=f2e797]: "17"
+                        - generic [ref=f2e799]: "18"
+                        - generic [ref=f2e801]: "19"
+                        - generic [ref=f2e803]: "20"
+                        - generic [ref=f2e805]: "21"
+                        - generic [ref=f2e807]: "22"
+                        - generic [ref=f2e809]: "23"
+                        - generic [ref=f2e811]: "24"
+                        - generic [ref=f2e813]: "25"
+                        - generic [ref=f2e815]: "26"
+                        - generic [ref=f2e817]: "27"
+                        - generic [ref=f2e819]: "28"
+                        - generic [ref=f2e821]: "29"
+                        - generic [ref=f2e823]: "30"
+                        - generic [ref=f2e825]: "31"
+                      - generic [ref=f2e828]:
+                        - generic [ref=f2e829] [cursor=pointer]: Today
+                        - generic [ref=f2e830] [cursor=pointer]: Clear
+                        - generic [ref=f2e831] [cursor=pointer]: Close
+                - generic [ref=f2e263]:
+                  - generic [ref=f2e264]: Gender
+                  - generic [ref=f2e266]:
+                    - generic [ref=f2e270] [cursor=pointer]:
+                      - radio "Male" [ref=f2e271]
+                      - text: Male
+                    - generic [ref=f2e276] [cursor=pointer]:
+                      - radio "Female" [ref=f2e277]
+                      - text: Female
+            - separator [ref=f2e279]
+            - generic [ref=f2e280]:
+              - paragraph [ref=f2e281]: "* Required"
+              - button "Save" [ref=f2e282] [cursor=pointer]
+        - generic [ref=f2e283]:
+          - separator [ref=f2e284]
+          - generic [ref=f2e285]:
+            - heading "Custom Fields" [level=6] [ref=f2e286]
+            - separator [ref=f2e287]
+            - generic [ref=f2e288]:
+              - generic [ref=f2e290]:
+                - generic [ref=f2e292]:
+                  - generic [ref=f2e293]: Blood Type
+                  - generic [ref=f2e297] [cursor=pointer]:
+                    - generic [ref=f2e298]: "-- Select --"
+                    - generic [ref=f2e299]: 
+                - generic [ref=f2e302]:
+                  - generic [ref=f2e303]: Test_Field
+                  - textbox [ref=f2e306]
+              - separator [ref=f2e307]
+              - button "Save" [ref=f2e309] [cursor=pointer]
+        - generic [ref=f2e310]:
+          - separator [ref=f2e311]
+          - generic [ref=f2e313]:
+            - heading "Attachments" [level=6] [ref=f2e314]
+            - button " Add" [ref=f2e315] [cursor=pointer]:
+              - generic [ref=f2e316]: 
+              - text: Add
+          - generic [ref=f2e317]:
+            - separator [ref=f2e318]
+            - generic [ref=f2e319]: No Records Found
+          - table [ref=f2e322]:
+            - rowgroup [ref=f2e323]:
+              - row [ref=f2e324]:
+                - columnheader "" [ref=f2e325]:
+                  - generic [ref=f2e327] [cursor=pointer]:
+                    - checkbox "" [ref=f2e328]
+                    - generic [ref=f2e329]: 
+                - columnheader "File Name" [ref=f2e331]
+                - columnheader "Description" [ref=f2e332]
+                - columnheader "Size" [ref=f2e333]
+                - columnheader "Type" [ref=f2e334]
+                - columnheader "Date Added" [ref=f2e335]
+                - columnheader "Added By" [ref=f2e336]
+                - columnheader "Actions" [ref=f2e337]
+            - rowgroup
+    - generic [ref=f2e338]:
+      - paragraph [ref=f2e339]: OrangeHRM OS 5.9
+      - paragraph [ref=f2e340]:
+        - text: © 2005 - 2026
+        - link "OrangeHRM, Inc" [ref=f2e341] [cursor=pointer]:
+          - /url: http://www.orangehrm.com
+        - text: . All rights reserved.

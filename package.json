@@ -1,0 +1,65 @@
+{
+  "name": "orangehrm-e2e-ai-playwright",
+  "version": "1.0.0",
+  "description": "Production-grade, AI-agent driven Playwright + TypeScript E2E framework for OrangeHRM (UI + API)",
+  "scripts": {
+    "test": "tsx scripts/run-tests.ts",
+    "test:parallel": "playwright test --project=ui-* --project=api",
+    "test:global-config": "playwright test --project=global-config",
+    "test:ui": "playwright test --project=ui-*",
+    "test:api": "playwright test --project=api",
+    "test:smoke": "playwright test --project=ui-* --project=api --grep @smoke",
+    "test:headed": "cross-env HEADLESS=false playwright test --project=ui-chromium",
+    "test:all-browsers": "cross-env BROWSERS=chromium,firefox,webkit tsx scripts/run-tests.ts",
+    "seed": "playwright test --project=seed",
+    "brd:md": "tsx scripts/brd-to-md.ts",
+    "tc:validate": "tsx scripts/tc-validate.ts",
+    "tc:excel": "tsx scripts/tc-excel.ts",
+    "tc:build": "npm run tc:validate && npm run tc:excel",
+    "report:allure": "tsx scripts/allure-report.ts",
+    "report:allure:open": "tsx scripts/allure-report.ts open",
+    "report:word": "tsx scripts/word-report.ts",
+    "report:html": "playwright show-report",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write \"{src,tests,scripts}/**/*.ts\"",
+    "check": "npm run typecheck && npm run lint && npm run tc:validate",
+    "agents:init": "playwright init-agents --loop=claude"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qatechlabs/oranghrm_end-to-end_ai_playwright_typescript.git"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/qatechlabs/oranghrm_end-to-end_ai_playwright_typescript/issues"
+  },
+  "homepage": "https://github.com/qatechlabs/oranghrm_end-to-end_ai_playwright_typescript#readme",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@faker-js/faker": "^10.6.0",
+    "@playwright/test": "1.63.0",
+    "@types/node": "^26.6.5",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "allure-commandline": "^2.46.1",
+    "allure-js-commons": "^3.14.0",
+    "allure-playwright": "^3.14.0",
+    "cross-env": "^10.1.0",
+    "docx": "^9.15.0",
+    "dotenv": "^18.0.9",
+    "eslint": "^10.13.0",
+    "eslint-plugin-playwright": "^2.12.1",
+    "exceljs": "^4.4.0",
+    "mammoth": "^1.13.0",
+    "prettier": "^3.9.10",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.0"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,217 @@
+- generic [ref=f9e2]:
+  - generic [ref=f9e3]:
+    - generic:
+      - complementary [ref=f9e4]:
+        - navigation "Sidepanel" [ref=f9e5]:
+          - generic [ref=f9e6]:
+            - link [ref=f9e7] [cursor=pointer]:
+              - /url: https://www.orangehrm.com/
+              - img "client brand banner" [ref=f9e9]
+            - text: 
+          - generic [ref=f9e10]:
+            - generic [ref=f9e11]:
+              - generic [ref=f9e12]:
+                - textbox "Search" [ref=f9e15]
+                - button "" [ref=f9e16] [cursor=pointer]
+              - separator [ref=f9e18]
+            - list [ref=f9e19]:
+              - listitem [ref=f9e20]:
+                - link "Admin" [ref=f9e21] [cursor=pointer]:
+                  - /url: /web/index.php/admin/viewAdminModule
+              - listitem [ref=f9e25]:
+                - link "PIM" [ref=f9e26] [cursor=pointer]:
+                  - /url: /web/index.php/pim/viewPimModule
+              - listitem [ref=f9e41]:
+                - link "Leave" [ref=f9e42] [cursor=pointer]:
+                  - /url: /web/index.php/leave/viewLeaveModule
+              - listitem [ref=f9e46]:
+                - link "Time" [ref=f9e47] [cursor=pointer]:
+                  - /url: /web/index.php/time/viewTimeModule
+              - listitem [ref=f9e54]:
+                - link "Recruitment" [ref=f9e55] [cursor=pointer]:
+                  - /url: /web/index.php/recruitment/viewRecruitmentModule
+              - listitem [ref=f9e62]:
+                - link "My Info" [ref=f9e63] [cursor=pointer]:
+                  - /url: /web/index.php/pim/viewMyDetails
+              - listitem [ref=f9e70]:
+                - link "Performance" [ref=f9e71] [cursor=pointer]:
+                  - /url: /web/index.php/performance/viewPerformanceModule
+              - listitem [ref=f9e80]:
+                - link "Dashboard" [ref=f9e81] [cursor=pointer]:
+                  - /url: /web/index.php/dashboard/index
+              - listitem [ref=f9e85]:
+                - link "Directory" [ref=f9e86] [cursor=pointer]:
+                  - /url: /web/index.php/directory/viewDirectory
+              - listitem [ref=f9e90]:
+                - link "Maintenance" [ref=f9e91] [cursor=pointer]:
+                  - /url: /web/index.php/maintenance/viewMaintenanceModule
+              - listitem [ref=f9e96]:
+                - link "Claim" [ref=f9e97] [cursor=pointer]:
+                  - /url: /web/index.php/claim/viewClaimModule
+              - listitem [ref=f9e105]:
+                - link "Buzz" [ref=f9e106] [cursor=pointer]:
+                  - /url: /web/index.php/buzz/viewBuzz
+      - banner [ref=f9e110]:
+        - generic [ref=f9e111]:
+          - generic [ref=f9e112]:
+            - text: 
+            - heading "PIM" [level=6] [ref=f9e114]
+          - link [ref=f9e116]:
+            - /url: https://orangehrm.com/open-source/upgrade-to-advanced
+            - button "Upgrade" [ref=f9e117] [cursor=pointer]
+          - list [ref=f9e123]:
+            - listitem [ref=f9e124]:
+              - generic [ref=f9e125] [cursor=pointer]:
+                - img "profile picture" [ref=f9e126]
+                - paragraph [ref=f9e127]: John Doe
+                - generic [ref=f9e128]: 
+        - navigation "Topbar Menu" [ref=f9e130]:
+          - list [ref=f9e131]:
+            - listitem [ref=f9e132] [cursor=pointer]:
+              - generic [ref=f9e133]:
+                - text: Configuration
+                - generic [ref=f9e134]: 
+            - listitem [ref=f9e135] [cursor=pointer]:
+              - link "Employee List" [ref=f9e136]:
+                - /url: "#"
+            - listitem [ref=f9e137] [cursor=pointer]:
+              - link "Add Employee" [ref=f9e138]:
+                - /url: "#"
+            - listitem [ref=f9e139] [cursor=pointer]:
+              - link "Reports" [ref=f9e140]:
+                - /url: "#"
+            - button "" [ref=f9e142] [cursor=pointer]
+    - generic [ref=f9e144]:
+      - generic [ref=f9e148]:
+        - generic [ref=f9e149]:
+          - generic [ref=f9e150]:
+            - heading "Plan PlanAutoP3A" [level=6] [ref=f9e152]
+            - img "profile picture" [ref=f9e155] [cursor=pointer]
+          - tablist [ref=f9e156]:
+            - tab [ref=f9e157]:
+              - link "Personal Details" [ref=f9e158] [cursor=pointer]:
+                - /url: /web/index.php/pim/viewPersonalDetails/empNumber/296
+            - tab [ref=f9e159]:
+              - link "Contact Details" [ref=f9e160] [cursor=pointer]:
+                - /url: /web/index.php/pim/contactDetails/empNumber/296
+            - tab [ref=f9e161]:
+              - link "Emergency Contacts" [ref=f9e162] [cursor=pointer]:
+                - /url: /web/index.php/pim/viewEmergencyContacts/empNumber/296
+            - tab [ref=f9e163]:
+              - link "Dependents" [ref=f9e164] [cursor=pointer]:
+                - /url: /web/index.php/pim/viewDependents/empNumber/296
+            - tab [ref=f9e165]:
+              - link "Immigration" [ref=f9e166] [cursor=pointer]:
+                - /url: /web/index.php/pim/viewImmigration/empNumber/296
+            - tab [ref=f9e167]:
+              - link "Job" [ref=f9e168] [cursor=pointer]:
+                - /url: /web/index.php/pim/viewJobDetails/empNumber/296
+            - tab [ref=f9e169]:
+              - link "Salary" [ref=f9e170] [cursor=pointer]:
+                - /url: /web/index.php/pim/viewSalaryList/empNumber/296
+            - tab [ref=f9e171]:
+              - link "Report-to" [ref=f9e172] [cursor=pointer]:
+                - /url: /web/index.php/pim/viewReportToDetails/empNumber/296
+            - tab [ref=f9e173]:
+              - link "Qualifications" [ref=f9e174] [cursor=pointer]:
+                - /url: /web/index.php/pim/viewQualifications/empNumber/296
+            - tab [ref=f9e175]:
+              - link "Memberships" [ref=f9e176] [cursor=pointer]:
+                - /url: /web/index.php/pim/viewMemberships/empNumber/296
+        - generic [ref=f9e177]:
+          - generic [ref=f9e179]:
+            - heading "Assigned Emergency Contacts" [level=6] [ref=f9e180]
+            - button " Add" [ref=f9e181] [cursor=pointer]:
+              - generic [ref=f9e182]: 
+              - text: Add
+          - generic [ref=f9e183]:
+            - separator [ref=f9e184]
+            - generic [ref=f9e186]:
+              - generic [ref=f9e187]: (2) Records Selected
+              - button " Delete Selected" [active] [ref=f9e188] [cursor=pointer]:
+                - generic [ref=f9e189]: 
+                - text: Delete Selected
+          - table [ref=f9e191]:
+            - rowgroup [ref=f9e192]:
+              - row [ref=f9e193]:
+                - columnheader "" [ref=f9e194]:
+                  - generic [ref=f9e196] [cursor=pointer]:
+                    - checkbox "" [checked] [ref=f9e197]
+                    - generic [ref=f9e198]: 
+                - columnheader "Name" [ref=f9e200]
+                - columnheader "Relationship" [ref=f9e201]
+                - columnheader "Home Telephone" [ref=f9e202]
+                - columnheader "Mobile" [ref=f9e203]
+                - columnheader "Work Telephone" [ref=f9e204]
+                - columnheader "Actions" [ref=f9e205]
+            - rowgroup [ref=f9e206]:
+              - row [ref=f9e208]:
+                - cell "" [ref=f9e209]:
+                  - generic [ref=f9e212] [cursor=pointer]:
+                    - checkbox "" [checked] [ref=f9e213]
+                    - generic [ref=f9e214]: 
+                - cell "John Roe" [ref=f9e216]
+                - cell "Friend" [ref=f9e218]
+                - cell "0112223334" [ref=f9e220]
+                - cell [ref=f9e222]
+                - cell [ref=f9e223]
+                - cell [ref=f9e224]:
+                  - generic [ref=f9e225]:
+                    - button "" [ref=f9e226] [cursor=pointer]
+                    - button "" [ref=f9e228] [cursor=pointer]
+              - row [ref=f9e231]:
+                - cell "" [ref=f9e232]:
+                  - generic [ref=f9e235] [cursor=pointer]:
+                    - checkbox "" [checked] [ref=f9e236]
+                    - generic [ref=f9e237]: 
+                - cell "Mary Poe" [ref=f9e239]
+                - cell "Aunt" [ref=f9e241]
+                - cell [ref=f9e243]
+                - cell [ref=f9e244]
+                - cell "0445556667" [ref=f9e245]
+                - cell [ref=f9e247]:
+                  - generic [ref=f9e248]:
+                    - button "" [ref=f9e249] [cursor=pointer]
+                    - button "" [ref=f9e251] [cursor=pointer]
+          - generic [ref=f9e254]:
+            - separator [ref=f9e255]
+            - generic [ref=f9e257]:
+              - heading "Attachments" [level=6] [ref=f9e258]
+              - button " Add" [ref=f9e259] [cursor=pointer]:
+                - generic [ref=f9e260]: 
+                - text: Add
+            - generic [ref=f9e261]:
+              - separator [ref=f9e262]
+              - generic [ref=f9e263]: No Records Found
+            - table [ref=f9e266]:
+              - rowgroup [ref=f9e267]:
+                - row [ref=f9e268]:
+                  - columnheader "" [ref=f9e269]:
+                    - generic [ref=f9e271] [cursor=pointer]:
+                      - checkbox "" [ref=f9e272]
+                      - generic [ref=f9e273]: 
+                  - columnheader "File Name" [ref=f9e275]
+                  - columnheader "Description" [ref=f9e276]
+                  - columnheader "Size" [ref=f9e277]
+                  - columnheader "Type" [ref=f9e278]
+                  - columnheader "Date Added" [ref=f9e279]
+                  - columnheader "Added By" [ref=f9e280]
+                  - columnheader "Actions" [ref=f9e281]
+              - rowgroup
+      - generic [ref=f9e282]:
+        - paragraph [ref=f9e283]: OrangeHRM OS 5.9
+        - paragraph [ref=f9e284]:
+          - text: © 2005 - 2026
+          - link "OrangeHRM, Inc" [ref=f9e285] [cursor=pointer]:
+            - /url: http://www.orangehrm.com
+          - text: . All rights reserved.
+  - dialog [ref=f9e286]:
+    - document [ref=f9e289]:
+      - button "×" [ref=f9e290] [cursor=pointer]
+      - paragraph [ref=f9e292]: Are you Sure?
+      - paragraph [ref=f9e294]: The selected record will be permanently deleted. Are you sure you want to continue?
+      - generic [ref=f9e295]:
+        - button "No, Cancel" [ref=f9e296] [cursor=pointer]
+        - button " Yes, Delete" [ref=f9e297] [cursor=pointer]:
+          - generic [ref=f9e298]: 
+          - text: Yes, Delete

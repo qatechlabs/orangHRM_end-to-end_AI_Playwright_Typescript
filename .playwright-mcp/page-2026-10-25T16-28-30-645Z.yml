@@ -1,0 +1,130 @@
+- generic [ref=f1e3]:
+  - generic:
+    - complementary [ref=f1e4]:
+      - navigation "Sidepanel" [ref=f1e5]:
+        - generic [ref=f1e6]:
+          - link [ref=f1e7] [cursor=pointer]:
+            - /url: https://www.orangehrm.com/
+            - img "client brand banner" [ref=f1e9]
+          - text: 
+        - generic [ref=f1e10]:
+          - generic [ref=f1e11]:
+            - generic [ref=f1e12]:
+              - textbox "Search" [ref=f1e15]
+              - button "" [ref=f1e16] [cursor=pointer]
+            - separator [ref=f1e18]
+          - list [ref=f1e19]:
+            - listitem [ref=f1e20]:
+              - link "Admin" [ref=f1e21] [cursor=pointer]:
+                - /url: /web/index.php/admin/viewAdminModule
+            - listitem [ref=f1e25]:
+              - link "PIM" [ref=f1e26] [cursor=pointer]:
+                - /url: /web/index.php/pim/viewPimModule
+            - listitem [ref=f1e41]:
+              - link "Leave" [ref=f1e42] [cursor=pointer]:
+                - /url: /web/index.php/leave/viewLeaveModule
+            - listitem [ref=f1e46]:
+              - link "Time" [ref=f1e47] [cursor=pointer]:
+                - /url: /web/index.php/time/viewTimeModule
+            - listitem [ref=f1e54]:
+              - link "Recruitment" [ref=f1e55] [cursor=pointer]:
+                - /url: /web/index.php/recruitment/viewRecruitmentModule
+            - listitem [ref=f1e62]:
+              - link "My Info" [ref=f1e63] [cursor=pointer]:
+                - /url: /web/index.php/pim/viewMyDetails
+            - listitem [ref=f1e70]:
+              - link "Performance" [ref=f1e71] [cursor=pointer]:
+                - /url: /web/index.php/performance/viewPerformanceModule
+            - listitem [ref=f1e80]:
+              - link "Dashboard" [ref=f1e81] [cursor=pointer]:
+                - /url: /web/index.php/dashboard/index
+            - listitem [ref=f1e85]:
+              - link "Directory" [ref=f1e86] [cursor=pointer]:
+                - /url: /web/index.php/directory/viewDirectory
+            - listitem [ref=f1e90]:
+              - link "Maintenance" [ref=f1e91] [cursor=pointer]:
+                - /url: /web/index.php/maintenance/viewMaintenanceModule
+            - listitem [ref=f1e96]:
+              - link "Claim" [ref=f1e97] [cursor=pointer]:
+                - /url: /web/index.php/claim/viewClaimModule
+            - listitem [ref=f1e105]:
+              - link "Buzz" [ref=f1e106] [cursor=pointer]:
+                - /url: /web/index.php/buzz/viewBuzz
+    - banner [ref=f1e110]:
+      - generic [ref=f1e111]:
+        - generic [ref=f1e112]:
+          - text: 
+          - generic [ref=f1e113]:
+            - heading "PIM" [level=6] [ref=f1e114]
+            - heading "/ Configuration" [level=6] [ref=f1e115]
+        - link [ref=f1e117]:
+          - /url: https://orangehrm.com/open-source/upgrade-to-advanced
+          - button "Upgrade" [ref=f1e118] [cursor=pointer]
+        - list [ref=f1e124]:
+          - listitem [ref=f1e125]:
+            - generic [ref=f1e126] [cursor=pointer]:
+              - img "profile picture" [ref=f1e127]
+              - paragraph [ref=f1e128]: manda user
+              - generic [ref=f1e129]: 
+      - navigation "Topbar Menu" [ref=f1e131]:
+        - list [ref=f1e132]:
+          - listitem [ref=f1e133] [cursor=pointer]:
+            - generic [ref=f1e134]:
+              - text: Configuration
+              - generic [ref=f1e135]: 
+          - listitem [ref=f1e136] [cursor=pointer]:
+            - link "Employee List" [ref=f1e137]:
+              - /url: "#"
+          - listitem [ref=f1e138] [cursor=pointer]:
+            - link "Add Employee" [ref=f1e139]:
+              - /url: "#"
+          - listitem [ref=f1e140] [cursor=pointer]:
+            - link "Reports" [ref=f1e141]:
+              - /url: "#"
+          - button "" [ref=f1e143] [cursor=pointer]
+  - generic [ref=f1e145]:
+    - generic [ref=f1e148]:
+      - paragraph [ref=f1e149]: Data Import
+      - separator [ref=f1e150]
+      - generic [ref=f1e151]:
+        - paragraph [ref=f1e152]: "Note:"
+        - list [ref=f1e153]:
+          - listitem [ref=f1e154]:
+            - paragraph [ref=f1e155]: Column order should not be changed
+          - listitem [ref=f1e156]:
+            - paragraph [ref=f1e157]: First Name and Last Name are compulsory
+          - listitem [ref=f1e158]:
+            - paragraph [ref=f1e159]: All date fields should be in YYYY-MM-DD format
+          - listitem [ref=f1e160]:
+            - paragraph [ref=f1e161]: If gender is specified, value should be either Male or Female
+          - listitem [ref=f1e162]:
+            - paragraph [ref=f1e163]: Each import file should be configured for 100 records or less
+          - listitem [ref=f1e164]:
+            - paragraph [ref=f1e165]: Multiple import files may be required
+          - listitem [ref=f1e166]:
+            - paragraph [ref=f1e167]:
+              - text: "Sample CSV file :"
+              - link "Download" [ref=f1e168] [cursor=pointer]:
+                - /url: "#"
+      - generic [ref=f1e169]:
+        - generic [ref=f1e172]:
+          - generic [ref=f1e173]:
+            - generic [ref=f1e174]: Select File*
+            - generic [ref=f1e176]:
+              - button "Choose File"
+              - generic [ref=f1e177]:
+                - generic [ref=f1e178] [cursor=pointer]: Browse
+                - generic [ref=f1e179]: No file selected
+                - generic [ref=f1e180] [cursor=pointer]: 
+          - paragraph [ref=f1e181]: Accepts up to 1MB
+        - separator [ref=f1e182]
+        - generic [ref=f1e183]:
+          - paragraph [ref=f1e184]: "* Required"
+          - button "Upload" [ref=f1e185] [cursor=pointer]
+    - generic [ref=f1e200]:
+      - paragraph [ref=f1e201]: OrangeHRM OS 5.9
+      - paragraph [ref=f1e202]:
+        - text: © 2005 - 2026
+        - link "OrangeHRM, Inc" [ref=f1e203] [cursor=pointer]:
+          - /url: http://www.orangehrm.com
+        - text: . All rights reserved.

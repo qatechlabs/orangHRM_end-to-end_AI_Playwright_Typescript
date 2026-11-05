@@ -1,0 +1,159 @@
+- generic [ref=f10e2]:
+  - generic [ref=f10e3]:
+    - generic:
+      - complementary [ref=f10e4]:
+        - navigation "Sidepanel" [ref=f10e5]:
+          - generic [ref=f10e6]:
+            - link [ref=f10e7] [cursor=pointer]:
+              - /url: https://www.orangehrm.com/
+              - img "client brand banner" [ref=f10e9]
+            - text: 
+          - generic [ref=f10e10]:
+            - generic [ref=f10e11]:
+              - generic [ref=f10e12]:
+                - textbox "Search" [ref=f10e15]
+                - button "" [ref=f10e16] [cursor=pointer]
+              - separator [ref=f10e18]
+            - list [ref=f10e19]:
+              - listitem [ref=f10e20]:
+                - link "Admin" [ref=f10e21] [cursor=pointer]:
+                  - /url: /web/index.php/admin/viewAdminModule
+              - listitem [ref=f10e25]:
+                - link "PIM" [ref=f10e26] [cursor=pointer]:
+                  - /url: /web/index.php/pim/viewPimModule
+              - listitem [ref=f10e41]:
+                - link "Leave" [ref=f10e42] [cursor=pointer]:
+                  - /url: /web/index.php/leave/viewLeaveModule
+              - listitem [ref=f10e46]:
+                - link "Time" [ref=f10e47] [cursor=pointer]:
+                  - /url: /web/index.php/time/viewTimeModule
+              - listitem [ref=f10e54]:
+                - link "Recruitment" [ref=f10e55] [cursor=pointer]:
+                  - /url: /web/index.php/recruitment/viewRecruitmentModule
+              - listitem [ref=f10e62]:
+                - link "My Info" [ref=f10e63] [cursor=pointer]:
+                  - /url: /web/index.php/pim/viewMyDetails
+              - listitem [ref=f10e70]:
+                - link "Performance" [ref=f10e71] [cursor=pointer]:
+                  - /url: /web/index.php/performance/viewPerformanceModule
+              - listitem [ref=f10e80]:
+                - link "Dashboard" [ref=f10e81] [cursor=pointer]:
+                  - /url: /web/index.php/dashboard/index
+              - listitem [ref=f10e85]:
+                - link "Directory" [ref=f10e86] [cursor=pointer]:
+                  - /url: /web/index.php/directory/viewDirectory
+              - listitem [ref=f10e90]:
+                - link "Maintenance" [ref=f10e91] [cursor=pointer]:
+                  - /url: /web/index.php/maintenance/viewMaintenanceModule
+              - listitem [ref=f10e96]:
+                - link "Claim" [ref=f10e97] [cursor=pointer]:
+                  - /url: /web/index.php/claim/viewClaimModule
+              - listitem [ref=f10e105]:
+                - link "Buzz" [ref=f10e106] [cursor=pointer]:
+                  - /url: /web/index.php/buzz/viewBuzz
+      - banner [ref=f10e110]:
+        - generic [ref=f10e111]:
+          - generic [ref=f10e112]:
+            - text: 
+            - generic [ref=f10e113]:
+              - heading "PIM" [level=6] [ref=f10e114]
+              - heading "/ Configuration" [level=6] [ref=f10e115]
+          - link [ref=f10e117]:
+            - /url: https://orangehrm.com/open-source/upgrade-to-advanced
+            - button "Upgrade" [ref=f10e118] [cursor=pointer]
+          - list [ref=f10e124]:
+            - listitem [ref=f10e125]:
+              - generic [ref=f10e126] [cursor=pointer]:
+                - img "profile picture" [ref=f10e127]
+                - paragraph [ref=f10e128]: manda user
+                - generic [ref=f10e129]: 
+        - navigation "Topbar Menu" [ref=f10e131]:
+          - list [ref=f10e132]:
+            - listitem [ref=f10e133] [cursor=pointer]:
+              - generic [ref=f10e134]:
+                - text: Configuration
+                - generic [ref=f10e135]: 
+            - listitem [ref=f10e136] [cursor=pointer]:
+              - link "Employee List" [ref=f10e137]:
+                - /url: "#"
+            - listitem [ref=f10e138] [cursor=pointer]:
+              - link "Add Employee" [ref=f10e139]:
+                - /url: "#"
+            - listitem [ref=f10e140] [cursor=pointer]:
+              - link "Reports" [ref=f10e141]:
+                - /url: "#"
+            - button "" [ref=f10e143] [cursor=pointer]
+    - generic [ref=f10e145]:
+      - generic [ref=f10e148]:
+        - generic [ref=f10e149]:
+          - generic [ref=f10e150]:
+            - heading "Custom Fields" [level=6] [ref=f10e151]
+            - paragraph [ref=f10e152]: "Remaining number of custom fields: 7"
+          - button " Add" [ref=f10e153] [cursor=pointer]:
+            - generic [ref=f10e154]: 
+            - text: Add
+        - generic [ref=f10e155]:
+          - separator [ref=f10e156]
+          - generic [ref=f10e157]: (3) Records Found
+        - table [ref=f10e160]:
+          - rowgroup [ref=f10e161]:
+            - row [ref=f10e162]:
+              - columnheader "" [ref=f10e163]:
+                - generic [ref=f10e165] [cursor=pointer]:
+                  - checkbox "" [ref=f10e166]
+                  - generic [ref=f10e167]: 
+              - columnheader "Custom Field Name" [ref=f10e169]
+              - columnheader "Screen" [ref=f10e170]
+              - columnheader "Field Type" [ref=f10e171]
+              - columnheader "Actions" [ref=f10e172]
+          - rowgroup [ref=f10e173]:
+            - row [ref=f10e175]:
+              - cell "" [ref=f10e176]:
+                - generic [ref=f10e180]:
+                  - checkbox "" [ref=f10e181]
+                  - generic [ref=f10e182]: 
+              - cell "Blood Type" [ref=f10e184]
+              - cell "Personal Details" [ref=f10e186]
+              - cell "Drop Down" [ref=f10e188]
+              - cell [ref=f10e190]:
+                - generic [ref=f10e191]:
+                  - button "" [ref=f10e192] [cursor=pointer]
+                  - button "" [ref=f10e194] [cursor=pointer]
+            - row [ref=f10e197]:
+              - cell "" [ref=f10e198]:
+                - generic [ref=f10e202]:
+                  - checkbox "" [ref=f10e203]
+                  - generic [ref=f10e204]: 
+              - cell "PlanAuto5 Field" [ref=f10e206]
+              - cell "Personal Details" [ref=f10e208]
+              - cell "Drop Down" [ref=f10e210]
+              - cell [ref=f10e212]:
+                - generic [ref=f10e213]:
+                  - button "" [active] [ref=f10e214] [cursor=pointer]
+                  - button "" [ref=f10e216] [cursor=pointer]
+            - row [ref=f10e219]:
+              - cell "" [ref=f10e220]:
+                - generic [ref=f10e224]:
+                  - checkbox "" [ref=f10e225]
+                  - generic [ref=f10e226]: 
+              - cell "Test_Field" [ref=f10e228]
+              - cell "Personal Details" [ref=f10e230]
+              - cell "Text or Number" [ref=f10e232]
+              - cell [ref=f10e234]:
+                - generic [ref=f10e235]:
+                  - button "" [ref=f10e236] [cursor=pointer]
+                  - button "" [ref=f10e238] [cursor=pointer]
+      - generic [ref=f10e241]:
+        - paragraph [ref=f10e242]: OrangeHRM OS 5.9
+        - paragraph [ref=f10e243]:
+          - text: © 2005 - 2026
+          - link "OrangeHRM, Inc" [ref=f10e244] [cursor=pointer]:
+            - /url: http://www.orangehrm.com
+          - text: . All rights reserved.
+  - generic [ref=f10e246] [cursor=pointer]:
+    - generic [ref=f10e247]:
+      - generic [ref=f10e248]: 
+      - generic [ref=f10e251]:
+        - paragraph [ref=f10e252]: Error
+        - paragraph [ref=f10e253]: Custom field(s) in use
+    - button "×" [ref=f10e255]

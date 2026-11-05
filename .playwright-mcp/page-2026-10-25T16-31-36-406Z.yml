@@ -1,0 +1,159 @@
+- generic [ref=f8e2]:
+  - generic [ref=f8e3]:
+    - generic:
+      - complementary [ref=f8e4]:
+        - navigation "Sidepanel" [ref=f8e5]:
+          - generic [ref=f8e6]:
+            - link [ref=f8e7] [cursor=pointer]:
+              - /url: https://www.orangehrm.com/
+              - img "client brand banner" [ref=f8e9]
+            - text: 
+          - generic [ref=f8e10]:
+            - generic [ref=f8e11]:
+              - generic [ref=f8e12]:
+                - textbox "Search" [ref=f8e15]
+                - button "" [ref=f8e16] [cursor=pointer]
+              - separator [ref=f8e18]
+            - list [ref=f8e19]:
+              - listitem [ref=f8e20]:
+                - link "Admin" [ref=f8e21] [cursor=pointer]:
+                  - /url: /web/index.php/admin/viewAdminModule
+              - listitem [ref=f8e25]:
+                - link "PIM" [ref=f8e26] [cursor=pointer]:
+                  - /url: /web/index.php/pim/viewPimModule
+              - listitem [ref=f8e41]:
+                - link "Leave" [ref=f8e42] [cursor=pointer]:
+                  - /url: /web/index.php/leave/viewLeaveModule
+              - listitem [ref=f8e46]:
+                - link "Time" [ref=f8e47] [cursor=pointer]:
+                  - /url: /web/index.php/time/viewTimeModule
+              - listitem [ref=f8e54]:
+                - link "Recruitment" [ref=f8e55] [cursor=pointer]:
+                  - /url: /web/index.php/recruitment/viewRecruitmentModule
+              - listitem [ref=f8e62]:
+                - link "My Info" [ref=f8e63] [cursor=pointer]:
+                  - /url: /web/index.php/pim/viewMyDetails
+              - listitem [ref=f8e70]:
+                - link "Performance" [ref=f8e71] [cursor=pointer]:
+                  - /url: /web/index.php/performance/viewPerformanceModule
+              - listitem [ref=f8e80]:
+                - link "Dashboard" [ref=f8e81] [cursor=pointer]:
+                  - /url: /web/index.php/dashboard/index
+              - listitem [ref=f8e85]:
+                - link "Directory" [ref=f8e86] [cursor=pointer]:
+                  - /url: /web/index.php/directory/viewDirectory
+              - listitem [ref=f8e90]:
+                - link "Maintenance" [ref=f8e91] [cursor=pointer]:
+                  - /url: /web/index.php/maintenance/viewMaintenanceModule
+              - listitem [ref=f8e96]:
+                - link "Claim" [ref=f8e97] [cursor=pointer]:
+                  - /url: /web/index.php/claim/viewClaimModule
+              - listitem [ref=f8e105]:
+                - link "Buzz" [ref=f8e106] [cursor=pointer]:
+                  - /url: /web/index.php/buzz/viewBuzz
+      - banner [ref=f8e110]:
+        - generic [ref=f8e111]:
+          - generic [ref=f8e112]:
+            - text: 
+            - generic [ref=f8e113]:
+              - heading "PIM" [level=6] [ref=f8e114]
+              - heading "/ Configuration" [level=6] [ref=f8e115]
+          - link [ref=f8e117]:
+            - /url: https://orangehrm.com/open-source/upgrade-to-advanced
+            - button "Upgrade" [ref=f8e118] [cursor=pointer]
+          - list [ref=f8e124]:
+            - listitem [ref=f8e125]:
+              - generic [ref=f8e126] [cursor=pointer]:
+                - img "profile picture" [ref=f8e127]
+                - paragraph [ref=f8e128]: manda user
+                - generic [ref=f8e129]: 
+        - navigation "Topbar Menu" [ref=f8e131]:
+          - list [ref=f8e132]:
+            - listitem [ref=f8e133] [cursor=pointer]:
+              - generic [ref=f8e134]:
+                - text: Configuration
+                - generic [ref=f8e135]: 
+            - listitem [ref=f8e136] [cursor=pointer]:
+              - link "Employee List" [ref=f8e137]:
+                - /url: "#"
+            - listitem [ref=f8e138] [cursor=pointer]:
+              - link "Add Employee" [ref=f8e139]:
+                - /url: "#"
+            - listitem [ref=f8e140] [cursor=pointer]:
+              - link "Reports" [ref=f8e141]:
+                - /url: "#"
+            - button "" [ref=f8e143] [cursor=pointer]
+    - generic [ref=f8e145]:
+      - generic [ref=f8e148]:
+        - generic [ref=f8e149]:
+          - paragraph [ref=f8e150]: Reporting Methods
+          - button " Add" [ref=f8e152] [cursor=pointer]:
+            - generic [ref=f8e153]: 
+            - text: Add
+        - generic [ref=f8e154]:
+          - separator [ref=f8e155]
+          - generic [ref=f8e156]: (4) Records Found
+        - table [ref=f8e159]:
+          - rowgroup [ref=f8e160]:
+            - row [ref=f8e161]:
+              - columnheader "" [ref=f8e162]:
+                - generic [ref=f8e164] [cursor=pointer]:
+                  - checkbox "" [ref=f8e165]
+                  - generic [ref=f8e166]: 
+              - columnheader "Name" [ref=f8e168]
+              - columnheader "Actions" [ref=f8e169]
+          - rowgroup [ref=f8e170]:
+            - row [ref=f8e172]:
+              - cell "" [ref=f8e173]:
+                - generic [ref=f8e177]:
+                  - checkbox "" [ref=f8e178]
+                  - generic [ref=f8e179]: 
+              - cell "Direct" [ref=f8e181]
+              - cell [ref=f8e183]:
+                - generic [ref=f8e184]:
+                  - button "" [ref=f8e185] [cursor=pointer]
+                  - button "" [ref=f8e187] [cursor=pointer]
+            - row [ref=f8e190]:
+              - cell "" [ref=f8e191]:
+                - generic [ref=f8e194] [cursor=pointer]:
+                  - checkbox "" [ref=f8e195]
+                  - generic [ref=f8e196]: 
+              - cell "Indirect" [ref=f8e198]
+              - cell [ref=f8e200]:
+                - generic [ref=f8e201]:
+                  - button "" [ref=f8e202] [cursor=pointer]
+                  - button "" [ref=f8e204] [cursor=pointer]
+            - row [ref=f8e207]:
+              - cell "" [ref=f8e208]:
+                - generic [ref=f8e212]:
+                  - checkbox "" [ref=f8e213]
+                  - generic [ref=f8e214]: 
+              - cell "PlanAuto6 Method" [ref=f8e216]
+              - cell [ref=f8e218]:
+                - generic [ref=f8e219]:
+                  - button "" [active] [ref=f8e220] [cursor=pointer]
+                  - button "" [ref=f8e222] [cursor=pointer]
+            - row [ref=f8e225]:
+              - cell "" [ref=f8e226]:
+                - generic [ref=f8e229] [cursor=pointer]:
+                  - checkbox "" [ref=f8e230]
+                  - generic [ref=f8e231]: 
+              - cell "Test_Reporting" [ref=f8e233]
+              - cell [ref=f8e235]:
+                - generic [ref=f8e236]:
+                  - button "" [ref=f8e237] [cursor=pointer]
+                  - button "" [ref=f8e239] [cursor=pointer]
+      - generic [ref=f8e242]:
+        - paragraph [ref=f8e243]: OrangeHRM OS 5.9
+        - paragraph [ref=f8e244]:
+          - text: © 2005 - 2026
+          - link "OrangeHRM, Inc" [ref=f8e245] [cursor=pointer]:
+            - /url: http://www.orangehrm.com
+          - text: . All rights reserved.
+  - generic [ref=f8e247] [cursor=pointer]:
+    - generic [ref=f8e248]:
+      - generic [ref=f8e249]: 
+      - generic [ref=f8e252]:
+        - paragraph [ref=f8e253]: Error
+        - paragraph [ref=f8e254]: Reporting Method(s) in Use
+    - button "×" [ref=f8e256]

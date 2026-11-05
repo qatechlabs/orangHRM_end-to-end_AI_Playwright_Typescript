@@ -1,0 +1,446 @@
+- generic [ref=f5e3]:
+  - generic:
+    - complementary [ref=f5e4]:
+      - navigation "Sidepanel" [ref=f5e5]:
+        - generic [ref=f5e6]:
+          - link [ref=f5e7] [cursor=pointer]:
+            - /url: https://www.orangehrm.com/
+            - img "client brand banner" [ref=f5e9]
+          - text: 
+        - generic [ref=f5e10]:
+          - generic [ref=f5e11]:
+            - generic [ref=f5e12]:
+              - textbox "Search" [ref=f5e15]
+              - button "" [ref=f5e16] [cursor=pointer]
+            - separator [ref=f5e18]
+          - list [ref=f5e19]:
+            - listitem [ref=f5e20]:
+              - link "Admin" [ref=f5e21] [cursor=pointer]:
+                - /url: /web/index.php/admin/viewAdminModule
+            - listitem [ref=f5e25]:
+              - link "PIM" [ref=f5e26] [cursor=pointer]:
+                - /url: /web/index.php/pim/viewPimModule
+            - listitem [ref=f5e41]:
+              - link "Leave" [ref=f5e42] [cursor=pointer]:
+                - /url: /web/index.php/leave/viewLeaveModule
+            - listitem [ref=f5e46]:
+              - link "Time" [ref=f5e47] [cursor=pointer]:
+                - /url: /web/index.php/time/viewTimeModule
+            - listitem [ref=f5e54]:
+              - link "Recruitment" [ref=f5e55] [cursor=pointer]:
+                - /url: /web/index.php/recruitment/viewRecruitmentModule
+            - listitem [ref=f5e62]:
+              - link "My Info" [ref=f5e63] [cursor=pointer]:
+                - /url: /web/index.php/pim/viewMyDetails
+            - listitem [ref=f5e70]:
+              - link "Performance" [ref=f5e71] [cursor=pointer]:
+                - /url: /web/index.php/performance/viewPerformanceModule
+            - listitem [ref=f5e80]:
+              - link "Dashboard" [ref=f5e81] [cursor=pointer]:
+                - /url: /web/index.php/dashboard/index
+            - listitem [ref=f5e85]:
+              - link "Directory" [ref=f5e86] [cursor=pointer]:
+                - /url: /web/index.php/directory/viewDirectory
+            - listitem [ref=f5e90]:
+              - link "Maintenance" [ref=f5e91] [cursor=pointer]:
+                - /url: /web/index.php/maintenance/viewMaintenanceModule
+            - listitem [ref=f5e96]:
+              - link "Claim" [ref=f5e97] [cursor=pointer]:
+                - /url: /web/index.php/claim/viewClaimModule
+            - listitem [ref=f5e105]:
+              - link "Buzz" [ref=f5e106] [cursor=pointer]:
+                - /url: /web/index.php/buzz/viewBuzz
+    - banner [ref=f5e110]:
+      - generic [ref=f5e111]:
+        - generic [ref=f5e112]:
+          - text: 
+          - heading "PIM" [level=6] [ref=f5e114]
+        - link [ref=f5e116]:
+          - /url: https://orangehrm.com/open-source/upgrade-to-advanced
+          - button "Upgrade" [ref=f5e117] [cursor=pointer]
+        - list [ref=f5e123]:
+          - listitem [ref=f5e124]:
+            - generic [ref=f5e125] [cursor=pointer]:
+              - img "profile picture" [ref=f5e126]
+              - paragraph [ref=f5e127]: John Doe
+              - generic [ref=f5e128]: 
+      - navigation "Topbar Menu" [ref=f5e130]:
+        - list [ref=f5e131]:
+          - listitem [ref=f5e132] [cursor=pointer]:
+            - generic [ref=f5e133]:
+              - text: Configuration
+              - generic [ref=f5e134]: 
+          - listitem [ref=f5e135] [cursor=pointer]:
+            - link "Employee List" [ref=f5e136]:
+              - /url: "#"
+          - listitem [ref=f5e137] [cursor=pointer]:
+            - link "Add Employee" [ref=f5e138]:
+              - /url: "#"
+          - listitem [ref=f5e139] [cursor=pointer]:
+            - link "Reports" [ref=f5e140]:
+              - /url: "#"
+          - button "" [ref=f5e142] [cursor=pointer]
+  - generic [ref=f5e144]:
+    - generic [ref=f5e148]:
+      - generic [ref=f5e149]:
+        - generic [ref=f5e150]:
+          - heading "Plan PlanAutoP3A" [level=6] [ref=f5e286]
+          - img "profile picture" [ref=f5e153] [cursor=pointer]
+        - tablist [ref=f5e154]:
+          - tab [ref=f5e155]:
+            - link "Personal Details" [ref=f5e156] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewPersonalDetails/empNumber/296
+          - tab [ref=f5e157]:
+            - link "Contact Details" [ref=f5e158] [cursor=pointer]:
+              - /url: /web/index.php/pim/contactDetails/empNumber/296
+          - tab [ref=f5e159]:
+            - link "Emergency Contacts" [ref=f5e160] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewEmergencyContacts/empNumber/296
+          - tab [ref=f5e161]:
+            - link "Dependents" [ref=f5e162] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewDependents/empNumber/296
+          - tab [ref=f5e163]:
+            - link "Immigration" [ref=f5e164] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewImmigration/empNumber/296
+          - tab [ref=f5e165]:
+            - link "Job" [ref=f5e166] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewJobDetails/empNumber/296
+          - tab [ref=f5e167]:
+            - link "Salary" [ref=f5e168] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewSalaryList/empNumber/296
+          - tab [ref=f5e169]:
+            - link "Report-to" [ref=f5e170] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewReportToDetails/empNumber/296
+          - tab [ref=f5e171]:
+            - link "Qualifications" [ref=f5e172] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewQualifications/empNumber/296
+          - tab [ref=f5e173]:
+            - link "Memberships" [ref=f5e174] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewMemberships/empNumber/296
+      - generic [ref=f5e175]:
+        - generic [ref=f5e176]:
+          - heading "Contact Details" [level=6] [ref=f5e177]
+          - separator [ref=f5e178]
+          - generic [ref=f5e179]:
+            - heading "Address" [level=6] [ref=f5e183]
+            - separator [ref=f5e184]
+            - generic [ref=f5e186]:
+              - generic [ref=f5e188]:
+                - generic [ref=f5e189]: Street 1
+                - textbox [ref=f5e192]
+              - generic [ref=f5e194]:
+                - generic [ref=f5e195]: Street 2
+                - textbox [ref=f5e198]
+              - generic [ref=f5e200]:
+                - generic [ref=f5e201]: City
+                - textbox [ref=f5e204]
+              - generic [ref=f5e206]:
+                - generic [ref=f5e207]: State/Province
+                - textbox [ref=f5e210]
+              - generic [ref=f5e212]:
+                - generic [ref=f5e213]: Zip/Postal Code
+                - textbox [ref=f5e216]
+              - generic [ref=f5e218]:
+                - generic [ref=f5e219]: Country
+                - generic [ref=f5e222]:
+                  - generic [ref=f5e223] [cursor=pointer]:
+                    - generic [active] [ref=f5e224]: "-- Select --"
+                    - generic [ref=f5e225]: 
+                  - listbox [ref=f5e287]:
+                    - option "-- Select --" [ref=f5e288] [cursor=pointer]
+                    - option "Afghanistan" [ref=f5e289] [cursor=pointer]
+                    - option "Albania" [ref=f5e291] [cursor=pointer]
+                    - option "Algeria" [ref=f5e293] [cursor=pointer]
+                    - option "American Samoa" [ref=f5e295] [cursor=pointer]
+                    - option "Andorra" [ref=f5e297] [cursor=pointer]
+                    - option "Angola" [ref=f5e299] [cursor=pointer]
+                    - option "Anguilla" [ref=f5e301] [cursor=pointer]
+                    - option "Antarctica" [ref=f5e303] [cursor=pointer]
+                    - option "Antigua and Barbuda" [ref=f5e305] [cursor=pointer]
+                    - option "Argentina" [ref=f5e307] [cursor=pointer]
+                    - option "Armenia" [ref=f5e309] [cursor=pointer]
+                    - option "Aruba" [ref=f5e311] [cursor=pointer]
+                    - option "Australia" [ref=f5e313] [cursor=pointer]
+                    - option "Austria" [ref=f5e315] [cursor=pointer]
+                    - option "Azerbaijan" [ref=f5e317] [cursor=pointer]
+                    - option "Bahamas" [ref=f5e319] [cursor=pointer]
+                    - option "Bahrain" [ref=f5e321] [cursor=pointer]
+                    - option "Bangladesh" [ref=f5e323] [cursor=pointer]
+                    - option "Barbados" [ref=f5e325] [cursor=pointer]
+                    - option "Belarus" [ref=f5e327] [cursor=pointer]
+                    - option "Belgium" [ref=f5e329] [cursor=pointer]
+                    - option "Belize" [ref=f5e331] [cursor=pointer]
+                    - option "Benin" [ref=f5e333] [cursor=pointer]
+                    - option "Bermuda" [ref=f5e335] [cursor=pointer]
+                    - option "Bhutan" [ref=f5e337] [cursor=pointer]
+                    - option "Bolivia" [ref=f5e339] [cursor=pointer]
+                    - option "Bosnia and Herzegovina" [ref=f5e341] [cursor=pointer]
+                    - option "Botswana" [ref=f5e343] [cursor=pointer]
+                    - option "Bouvet Island" [ref=f5e345] [cursor=pointer]
+                    - option "Brazil" [ref=f5e347] [cursor=pointer]
+                    - option "British Indian Ocean Territory" [ref=f5e349] [cursor=pointer]
+                    - option "Brunei Darussalam" [ref=f5e351] [cursor=pointer]
+                    - option "Bulgaria" [ref=f5e353] [cursor=pointer]
+                    - option "Burkina Faso" [ref=f5e355] [cursor=pointer]
+                    - option "Burundi" [ref=f5e357] [cursor=pointer]
+                    - option "Cambodia" [ref=f5e359] [cursor=pointer]
+                    - option "Cameroon" [ref=f5e361] [cursor=pointer]
+                    - option "Canada" [ref=f5e363] [cursor=pointer]
+                    - option "Cape Verde" [ref=f5e365] [cursor=pointer]
+                    - option "Cayman Islands" [ref=f5e367] [cursor=pointer]
+                    - option "Central African Republic" [ref=f5e369] [cursor=pointer]
+                    - option "Chad" [ref=f5e371] [cursor=pointer]
+                    - option "Chile" [ref=f5e373] [cursor=pointer]
+                    - option "China" [ref=f5e375] [cursor=pointer]
+                    - option "Christmas Island" [ref=f5e377] [cursor=pointer]
+                    - option "Cocos (Keeling) Islands" [ref=f5e379] [cursor=pointer]
+                    - option "Colombia" [ref=f5e381] [cursor=pointer]
+                    - option "Comoros" [ref=f5e383] [cursor=pointer]
+                    - option "Congo" [ref=f5e385] [cursor=pointer]
+                    - option "Congo, the Democratic Republic of the" [ref=f5e387] [cursor=pointer]
+                    - option "Cook Islands" [ref=f5e389] [cursor=pointer]
+                    - option "Costa Rica" [ref=f5e391] [cursor=pointer]
+                    - option "Cote D'Ivoire" [ref=f5e393] [cursor=pointer]
+                    - option "Croatia" [ref=f5e395] [cursor=pointer]
+                    - option "Cuba" [ref=f5e397] [cursor=pointer]
+                    - option "Cyprus" [ref=f5e399] [cursor=pointer]
+                    - option "Czech Republic" [ref=f5e401] [cursor=pointer]
+                    - option "Denmark" [ref=f5e403] [cursor=pointer]
+                    - option "Djibouti" [ref=f5e405] [cursor=pointer]
+                    - option "Dominica" [ref=f5e407] [cursor=pointer]
+                    - option "Dominican Republic" [ref=f5e409] [cursor=pointer]
+                    - option "Ecuador" [ref=f5e411] [cursor=pointer]
+                    - option "Egypt" [ref=f5e413] [cursor=pointer]
+                    - option "El Salvador" [ref=f5e415] [cursor=pointer]
+                    - option "Equatorial Guinea" [ref=f5e417] [cursor=pointer]
+                    - option "Eritrea" [ref=f5e419] [cursor=pointer]
+                    - option "Estonia" [ref=f5e421] [cursor=pointer]
+                    - option "Ethiopia" [ref=f5e423] [cursor=pointer]
+                    - option "Falkland Islands (Malvinas)" [ref=f5e425] [cursor=pointer]
+                    - option "Faroe Islands" [ref=f5e427] [cursor=pointer]
+                    - option "Fiji" [ref=f5e429] [cursor=pointer]
+                    - option "Finland" [ref=f5e431] [cursor=pointer]
+                    - option "France" [ref=f5e433] [cursor=pointer]
+                    - option "French Guiana" [ref=f5e435] [cursor=pointer]
+                    - option "French Polynesia" [ref=f5e437] [cursor=pointer]
+                    - option "French Southern Territories" [ref=f5e439] [cursor=pointer]
+                    - option "Gabon" [ref=f5e441] [cursor=pointer]
+                    - option "Gambia" [ref=f5e443] [cursor=pointer]
+                    - option "Georgia" [ref=f5e445] [cursor=pointer]
+                    - option "Germany" [ref=f5e447] [cursor=pointer]
+                    - option "Ghana" [ref=f5e449] [cursor=pointer]
+                    - option "Gibraltar" [ref=f5e451] [cursor=pointer]
+                    - option "Greece" [ref=f5e453] [cursor=pointer]
+                    - option "Greenland" [ref=f5e455] [cursor=pointer]
+                    - option "Grenada" [ref=f5e457] [cursor=pointer]
+                    - option "Guadeloupe" [ref=f5e459] [cursor=pointer]
+                    - option "Guam" [ref=f5e461] [cursor=pointer]
+                    - option "Guatemala" [ref=f5e463] [cursor=pointer]
+                    - option "Guinea" [ref=f5e465] [cursor=pointer]
+                    - option "Guinea-Bissau" [ref=f5e467] [cursor=pointer]
+                    - option "Guyana" [ref=f5e469] [cursor=pointer]
+                    - option "Haiti" [ref=f5e471] [cursor=pointer]
+                    - option "Heard Island and Mcdonald Islands" [ref=f5e473] [cursor=pointer]
+                    - option "Holy See (Vatican City State)" [ref=f5e475] [cursor=pointer]
+                    - option "Honduras" [ref=f5e477] [cursor=pointer]
+                    - option "Hong Kong" [ref=f5e479] [cursor=pointer]
+                    - option "Hungary" [ref=f5e481] [cursor=pointer]
+                    - option "Iceland" [ref=f5e483] [cursor=pointer]
+                    - option "India" [ref=f5e485] [cursor=pointer]
+                    - option "Indonesia" [ref=f5e487] [cursor=pointer]
+                    - option "Iran, Islamic Republic of" [ref=f5e489] [cursor=pointer]
+                    - option "Iraq" [ref=f5e491] [cursor=pointer]
+                    - option "Ireland" [ref=f5e493] [cursor=pointer]
+                    - option "Israel" [ref=f5e495] [cursor=pointer]
+                    - option "Italy" [ref=f5e497] [cursor=pointer]
+                    - option "Jamaica" [ref=f5e499] [cursor=pointer]
+                    - option "Japan" [ref=f5e501] [cursor=pointer]
+                    - option "Jordan" [ref=f5e503] [cursor=pointer]
+                    - option "Kazakhstan" [ref=f5e505] [cursor=pointer]
+                    - option "Kenya" [ref=f5e507] [cursor=pointer]
+                    - option "Kiribati" [ref=f5e509] [cursor=pointer]
+                    - option "Korea, Democratic People's Republic of" [ref=f5e511] [cursor=pointer]
+                    - option "Korea, Republic of" [ref=f5e513] [cursor=pointer]
+                    - option "Kuwait" [ref=f5e515] [cursor=pointer]
+                    - option "Kyrgyzstan" [ref=f5e517] [cursor=pointer]
+                    - option "Lao People's Democratic Republic" [ref=f5e519] [cursor=pointer]
+                    - option "Latvia" [ref=f5e521] [cursor=pointer]
+                    - option "Lebanon" [ref=f5e523] [cursor=pointer]
+                    - option "Lesotho" [ref=f5e525] [cursor=pointer]
+                    - option "Liberia" [ref=f5e527] [cursor=pointer]
+                    - option "Libyan Arab Jamahiriya" [ref=f5e529] [cursor=pointer]
+                    - option "Liechtenstein" [ref=f5e531] [cursor=pointer]
+                    - option "Lithuania" [ref=f5e533] [cursor=pointer]
+                    - option "Luxembourg" [ref=f5e535] [cursor=pointer]
+                    - option "Macao" [ref=f5e537] [cursor=pointer]
+                    - option "Macedonia, the Former Yugoslav Republic of" [ref=f5e539] [cursor=pointer]
+                    - option "Madagascar" [ref=f5e541] [cursor=pointer]
+                    - option "Malawi" [ref=f5e543] [cursor=pointer]
+                    - option "Malaysia" [ref=f5e545] [cursor=pointer]
+                    - option "Maldives" [ref=f5e547] [cursor=pointer]
+                    - option "Mali" [ref=f5e549] [cursor=pointer]
+                    - option "Malta" [ref=f5e551] [cursor=pointer]
+                    - option "Marshall Islands" [ref=f5e553] [cursor=pointer]
+                    - option "Martinique" [ref=f5e555] [cursor=pointer]
+                    - option "Mauritania" [ref=f5e557] [cursor=pointer]
+                    - option "Mauritius" [ref=f5e559] [cursor=pointer]
+                    - option "Mayotte" [ref=f5e561] [cursor=pointer]
+                    - option "Mexico" [ref=f5e563] [cursor=pointer]
+                    - option "Micronesia, Federated States of" [ref=f5e565] [cursor=pointer]
+                    - option "Moldova, Republic of" [ref=f5e567] [cursor=pointer]
+                    - option "Monaco" [ref=f5e569] [cursor=pointer]
+                    - option "Mongolia" [ref=f5e571] [cursor=pointer]
+                    - option "Montserrat" [ref=f5e573] [cursor=pointer]
+                    - option "Morocco" [ref=f5e575] [cursor=pointer]
+                    - option "Mozambique" [ref=f5e577] [cursor=pointer]
+                    - option "Myanmar" [ref=f5e579] [cursor=pointer]
+                    - option "Namibia" [ref=f5e581] [cursor=pointer]
+                    - option "Nauru" [ref=f5e583] [cursor=pointer]
+                    - option "Nepal" [ref=f5e585] [cursor=pointer]
+                    - option "Netherlands" [ref=f5e587] [cursor=pointer]
+                    - option "Netherlands Antilles" [ref=f5e589] [cursor=pointer]
+                    - option "New Caledonia" [ref=f5e591] [cursor=pointer]
+                    - option "New Zealand" [ref=f5e593] [cursor=pointer]
+                    - option "Nicaragua" [ref=f5e595] [cursor=pointer]
+                    - option "Niger" [ref=f5e597] [cursor=pointer]
+                    - option "Nigeria" [ref=f5e599] [cursor=pointer]
+                    - option "Niue" [ref=f5e601] [cursor=pointer]
+                    - option "Norfolk Island" [ref=f5e603] [cursor=pointer]
+                    - option "Northern Mariana Islands" [ref=f5e605] [cursor=pointer]
+                    - option "Norway" [ref=f5e607] [cursor=pointer]
+                    - option "Oman" [ref=f5e609] [cursor=pointer]
+                    - option "Pakistan" [ref=f5e611] [cursor=pointer]
+                    - option "Palau" [ref=f5e613] [cursor=pointer]
+                    - option "Palestinian Territory, Occupied" [ref=f5e615] [cursor=pointer]
+                    - option "Panama" [ref=f5e617] [cursor=pointer]
+                    - option "Papua New Guinea" [ref=f5e619] [cursor=pointer]
+                    - option "Paraguay" [ref=f5e621] [cursor=pointer]
+                    - option "Peru" [ref=f5e623] [cursor=pointer]
+                    - option "Philippines" [ref=f5e625] [cursor=pointer]
+                    - option "Pitcairn" [ref=f5e627] [cursor=pointer]
+                    - option "Poland" [ref=f5e629] [cursor=pointer]
+                    - option "Portugal" [ref=f5e631] [cursor=pointer]
+                    - option "Puerto Rico" [ref=f5e633] [cursor=pointer]
+                    - option "Qatar" [ref=f5e635] [cursor=pointer]
+                    - option "Reunion" [ref=f5e637] [cursor=pointer]
+                    - option "Romania" [ref=f5e639] [cursor=pointer]
+                    - option "Russian Federation" [ref=f5e641] [cursor=pointer]
+                    - option "Rwanda" [ref=f5e643] [cursor=pointer]
+                    - option "Saint Helena" [ref=f5e645] [cursor=pointer]
+                    - option "Saint Kitts and Nevis" [ref=f5e647] [cursor=pointer]
+                    - option "Saint Lucia" [ref=f5e649] [cursor=pointer]
+                    - option "Saint Pierre and Miquelon" [ref=f5e651] [cursor=pointer]
+                    - option "Saint Vincent and the Grenadines" [ref=f5e653] [cursor=pointer]
+                    - option "Samoa" [ref=f5e655] [cursor=pointer]
+                    - option "San Marino" [ref=f5e657] [cursor=pointer]
+                    - option "Sao Tome and Principe" [ref=f5e659] [cursor=pointer]
+                    - option "Saudi Arabia" [ref=f5e661] [cursor=pointer]
+                    - option "Senegal" [ref=f5e663] [cursor=pointer]
+                    - option "Serbia and Montenegro" [ref=f5e665] [cursor=pointer]
+                    - option "Seychelles" [ref=f5e667] [cursor=pointer]
+                    - option "Sierra Leone" [ref=f5e669] [cursor=pointer]
+                    - option "Singapore" [ref=f5e671] [cursor=pointer]
+                    - option "Slovakia" [ref=f5e673] [cursor=pointer]
+                    - option "Slovenia" [ref=f5e675] [cursor=pointer]
+                    - option "Solomon Islands" [ref=f5e677] [cursor=pointer]
+                    - option "Somalia" [ref=f5e679] [cursor=pointer]
+                    - option "South Africa" [ref=f5e681] [cursor=pointer]
+                    - option "South Georgia and the South Sandwich Islands" [ref=f5e683] [cursor=pointer]
+                    - option "Spain" [ref=f5e685] [cursor=pointer]
+                    - option "Sri Lanka" [ref=f5e687] [cursor=pointer]
+                    - option "Sudan" [ref=f5e689] [cursor=pointer]
+                    - option "Suriname" [ref=f5e691] [cursor=pointer]
+                    - option "Svalbard and Jan Mayen" [ref=f5e693] [cursor=pointer]
+                    - option "Swaziland" [ref=f5e695] [cursor=pointer]
+                    - option "Sweden" [ref=f5e697] [cursor=pointer]
+                    - option "Switzerland" [ref=f5e699] [cursor=pointer]
+                    - option "Syrian Arab Republic" [ref=f5e701] [cursor=pointer]
+                    - option "Taiwan" [ref=f5e703] [cursor=pointer]
+                    - option "Tajikistan" [ref=f5e705] [cursor=pointer]
+                    - option "Tanzania, United Republic of" [ref=f5e707] [cursor=pointer]
+                    - option "Thailand" [ref=f5e709] [cursor=pointer]
+                    - option "Timor-Leste" [ref=f5e711] [cursor=pointer]
+                    - option "Togo" [ref=f5e713] [cursor=pointer]
+                    - option "Tokelau" [ref=f5e715] [cursor=pointer]
+                    - option "Tonga" [ref=f5e717] [cursor=pointer]
+                    - option "Trinidad and Tobago" [ref=f5e719] [cursor=pointer]
+                    - option "Tunisia" [ref=f5e721] [cursor=pointer]
+                    - option "Turkey" [ref=f5e723] [cursor=pointer]
+                    - option "Turkmenistan" [ref=f5e725] [cursor=pointer]
+                    - option "Turks and Caicos Islands" [ref=f5e727] [cursor=pointer]
+                    - option "Tuvalu" [ref=f5e729] [cursor=pointer]
+                    - option "Uganda" [ref=f5e731] [cursor=pointer]
+                    - option "Ukraine" [ref=f5e733] [cursor=pointer]
+                    - option "United Arab Emirates" [ref=f5e735] [cursor=pointer]
+                    - option "United Kingdom" [ref=f5e737] [cursor=pointer]
+                    - option "United States" [ref=f5e739] [cursor=pointer]
+                    - option "United States Minor Outlying Islands" [ref=f5e741] [cursor=pointer]
+                    - option "Uruguay" [ref=f5e743] [cursor=pointer]
+                    - option "Uzbekistan" [ref=f5e745] [cursor=pointer]
+                    - option "Vanuatu" [ref=f5e747] [cursor=pointer]
+                    - option "Venezuela" [ref=f5e749] [cursor=pointer]
+                    - option "Viet Nam" [ref=f5e751] [cursor=pointer]
+                    - option "Virgin Islands, British" [ref=f5e753] [cursor=pointer]
+                    - option "Virgin Islands, U.s." [ref=f5e755] [cursor=pointer]
+                    - option "Wallis and Futuna" [ref=f5e757] [cursor=pointer]
+                    - option "Western Sahara" [ref=f5e759] [cursor=pointer]
+                    - option "Yemen" [ref=f5e761] [cursor=pointer]
+                    - option "Zambia" [ref=f5e763] [cursor=pointer]
+                    - option "Zimbabwe" [ref=f5e765] [cursor=pointer]
+            - heading "Telephone" [level=6] [ref=f5e227]
+            - separator [ref=f5e228]
+            - generic [ref=f5e230]:
+              - generic [ref=f5e232]:
+                - generic [ref=f5e233]: Home
+                - textbox [ref=f5e236]
+              - generic [ref=f5e238]:
+                - generic [ref=f5e239]: Mobile
+                - textbox [ref=f5e242]
+              - generic [ref=f5e244]:
+                - generic [ref=f5e245]: Work
+                - textbox [ref=f5e248]
+            - heading "Email" [level=6] [ref=f5e249]
+            - separator [ref=f5e250]
+            - generic [ref=f5e252]:
+              - generic [ref=f5e254]:
+                - generic [ref=f5e255]: Work Email
+                - textbox [ref=f5e258]
+              - generic [ref=f5e260]:
+                - generic [ref=f5e261]: Other Email
+                - textbox [ref=f5e264]
+            - separator [ref=f5e265]
+            - generic [ref=f5e266]:
+              - paragraph [ref=f5e267]: "* Required"
+              - button "Save" [ref=f5e268] [cursor=pointer]
+        - generic [ref=f5e269]:
+          - separator [ref=f5e270]
+          - generic [ref=f5e272]:
+            - heading "Attachments" [level=6] [ref=f5e273]
+            - button " Add" [ref=f5e274] [cursor=pointer]:
+              - generic [ref=f5e275]: 
+              - text: Add
+          - generic [ref=f5e767]:
+            - separator [ref=f5e768]
+            - generic [ref=f5e769]: No Records Found
+          - table [ref=f5e277]:
+            - rowgroup [ref=f5e771]:
+              - row [ref=f5e772]:
+                - columnheader "" [ref=f5e773]:
+                  - generic [ref=f5e775] [cursor=pointer]:
+                    - checkbox "" [ref=f5e776]
+                    - generic [ref=f5e777]: 
+                - columnheader "File Name" [ref=f5e779]
+                - columnheader "Description" [ref=f5e780]
+                - columnheader "Size" [ref=f5e781]
+                - columnheader "Type" [ref=f5e782]
+                - columnheader "Date Added" [ref=f5e783]
+                - columnheader "Added By" [ref=f5e784]
+                - columnheader "Actions" [ref=f5e785]
+            - rowgroup
+    - generic [ref=f5e281]:
+      - paragraph [ref=f5e282]: OrangeHRM OS 5.9
+      - paragraph [ref=f5e283]:
+        - text: © 2005 - 2026
+        - link "OrangeHRM, Inc" [ref=f5e284] [cursor=pointer]:
+          - /url: http://www.orangehrm.com
+        - text: . All rights reserved.

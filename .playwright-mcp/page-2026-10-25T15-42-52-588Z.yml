@@ -1,0 +1,425 @@
+- generic [ref=f2e3]:
+  - generic:
+    - complementary [ref=f2e4]:
+      - navigation "Sidepanel" [ref=f2e5]:
+        - generic [ref=f2e6]:
+          - link [ref=f2e7] [cursor=pointer]:
+            - /url: https://www.orangehrm.com/
+            - img "client brand banner" [ref=f2e9]
+          - text: 
+        - generic [ref=f2e10]:
+          - generic [ref=f2e11]:
+            - generic [ref=f2e12]:
+              - textbox "Search" [ref=f2e15]
+              - button "" [ref=f2e16] [cursor=pointer]
+            - separator [ref=f2e18]
+          - list [ref=f2e19]:
+            - listitem [ref=f2e20]:
+              - link "Admin" [ref=f2e21] [cursor=pointer]:
+                - /url: /web/index.php/admin/viewAdminModule
+            - listitem [ref=f2e25]:
+              - link "PIM" [ref=f2e26] [cursor=pointer]:
+                - /url: /web/index.php/pim/viewPimModule
+            - listitem [ref=f2e41]:
+              - link "Leave" [ref=f2e42] [cursor=pointer]:
+                - /url: /web/index.php/leave/viewLeaveModule
+            - listitem [ref=f2e46]:
+              - link "Time" [ref=f2e47] [cursor=pointer]:
+                - /url: /web/index.php/time/viewTimeModule
+            - listitem [ref=f2e54]:
+              - link "Recruitment" [ref=f2e55] [cursor=pointer]:
+                - /url: /web/index.php/recruitment/viewRecruitmentModule
+            - listitem [ref=f2e62]:
+              - link "My Info" [ref=f2e63] [cursor=pointer]:
+                - /url: /web/index.php/pim/viewMyDetails
+            - listitem [ref=f2e70]:
+              - link "Performance" [ref=f2e71] [cursor=pointer]:
+                - /url: /web/index.php/performance/viewPerformanceModule
+            - listitem [ref=f2e80]:
+              - link "Dashboard" [ref=f2e81] [cursor=pointer]:
+                - /url: /web/index.php/dashboard/index
+            - listitem [ref=f2e85]:
+              - link "Directory" [ref=f2e86] [cursor=pointer]:
+                - /url: /web/index.php/directory/viewDirectory
+            - listitem [ref=f2e90]:
+              - link "Maintenance" [ref=f2e91] [cursor=pointer]:
+                - /url: /web/index.php/maintenance/viewMaintenanceModule
+            - listitem [ref=f2e96]:
+              - link "Claim" [ref=f2e97] [cursor=pointer]:
+                - /url: /web/index.php/claim/viewClaimModule
+            - listitem [ref=f2e105]:
+              - link "Buzz" [ref=f2e106] [cursor=pointer]:
+                - /url: /web/index.php/buzz/viewBuzz
+    - banner [ref=f2e110]:
+      - generic [ref=f2e111]:
+        - generic [ref=f2e112]:
+          - text: 
+          - heading "PIM" [level=6] [ref=f2e114]
+        - link [ref=f2e116]:
+          - /url: https://orangehrm.com/open-source/upgrade-to-advanced
+          - button "Upgrade" [ref=f2e117] [cursor=pointer]
+        - list [ref=f2e123]:
+          - listitem [ref=f2e124]:
+            - generic [ref=f2e125] [cursor=pointer]:
+              - img "profile picture" [ref=f2e126]
+              - paragraph [ref=f2e127]: John Doe
+              - generic [ref=f2e128]: 
+      - navigation "Topbar Menu" [ref=f2e130]:
+        - list [ref=f2e131]:
+          - listitem [ref=f2e132] [cursor=pointer]:
+            - generic [ref=f2e133]:
+              - text: Configuration
+              - generic [ref=f2e134]: 
+          - listitem [ref=f2e135] [cursor=pointer]:
+            - link "Employee List" [ref=f2e136]:
+              - /url: "#"
+          - listitem [ref=f2e137] [cursor=pointer]:
+            - link "Add Employee" [ref=f2e138]:
+              - /url: "#"
+          - listitem [ref=f2e139] [cursor=pointer]:
+            - link "Reports" [ref=f2e140]:
+              - /url: "#"
+          - button "" [ref=f2e142] [cursor=pointer]
+  - generic [ref=f2e144]:
+    - generic [ref=f2e148]:
+      - generic [ref=f2e149]:
+        - generic [ref=f2e150]:
+          - heading "Plan PlanAutoP3A" [level=6] [ref=f2e152]
+          - img "profile picture" [ref=f2e155] [cursor=pointer]
+        - tablist [ref=f2e156]:
+          - tab [ref=f2e157]:
+            - link "Personal Details" [ref=f2e158] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewPersonalDetails/empNumber/296
+          - tab [ref=f2e159]:
+            - link "Contact Details" [ref=f2e160] [cursor=pointer]:
+              - /url: /web/index.php/pim/contactDetails/empNumber/296
+          - tab [ref=f2e161]:
+            - link "Emergency Contacts" [ref=f2e162] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewEmergencyContacts/empNumber/296
+          - tab [ref=f2e163]:
+            - link "Dependents" [ref=f2e164] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewDependents/empNumber/296
+          - tab [ref=f2e165]:
+            - link "Immigration" [ref=f2e166] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewImmigration/empNumber/296
+          - tab [ref=f2e167]:
+            - link "Job" [ref=f2e168] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewJobDetails/empNumber/296
+          - tab [ref=f2e169]:
+            - link "Salary" [ref=f2e170] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewSalaryList/empNumber/296
+          - tab [ref=f2e171]:
+            - link "Report-to" [ref=f2e172] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewReportToDetails/empNumber/296
+          - tab [ref=f2e173]:
+            - link "Qualifications" [ref=f2e174] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewQualifications/empNumber/296
+          - tab [ref=f2e175]:
+            - link "Memberships" [ref=f2e176] [cursor=pointer]:
+              - /url: /web/index.php/pim/viewMemberships/empNumber/296
+      - generic [ref=f2e177]:
+        - generic [ref=f2e178]:
+          - heading "Personal Details" [level=6] [ref=f2e179]
+          - separator [ref=f2e180]
+          - generic [ref=f2e181]:
+            - generic [ref=f2e185]:
+              - generic [ref=f2e186]: Employee Full Name*
+              - generic [ref=f2e188]:
+                - textbox "First Name" [ref=f2e191]: Plan
+                - textbox "Middle Name" [ref=f2e194]
+                - textbox "Last Name" [ref=f2e197]: PlanAutoP3A
+            - separator [ref=f2e198]
+            - generic [ref=f2e199]:
+              - generic [ref=f2e200]:
+                - generic [ref=f2e202]:
+                  - generic [ref=f2e203]: Employee Id
+                  - textbox [ref=f2e206]: "0497"
+                - generic [ref=f2e208]:
+                  - generic [ref=f2e209]: Other Id
+                  - textbox [ref=f2e212]
+              - generic [ref=f2e213]:
+                - generic [ref=f2e215]:
+                  - generic [ref=f2e216]: Driver's License Number
+                  - textbox [ref=f2e219]
+                - generic [ref=f2e221]:
+                  - generic [ref=f2e222]: License Expiry Date
+                  - generic [ref=f2e226]:
+                    - textbox "yyyy-dd-mm" [ref=f2e227]
+                    - generic [ref=f2e228] [cursor=pointer]: 
+            - separator [ref=f2e229]
+            - generic [ref=f2e230]:
+              - generic [ref=f2e231]:
+                - generic [ref=f2e233]:
+                  - generic [ref=f2e234]: Nationality
+                  - generic [ref=f2e237]:
+                    - generic [ref=f2e238] [cursor=pointer]:
+                      - generic [active] [ref=f2e239]: "-- Select --"
+                      - generic [ref=f2e240]: 
+                    - listbox [ref=f2e344]:
+                      - option "-- Select --" [ref=f2e345] [cursor=pointer]
+                      - option "Afghan" [ref=f2e346] [cursor=pointer]
+                      - option "Albanian" [ref=f2e348] [cursor=pointer]
+                      - option "Algerian" [ref=f2e350] [cursor=pointer]
+                      - option "American" [ref=f2e352] [cursor=pointer]
+                      - option "Andorran" [ref=f2e354] [cursor=pointer]
+                      - option "Angolan" [ref=f2e356] [cursor=pointer]
+                      - option "Antiguans" [ref=f2e358] [cursor=pointer]
+                      - option "Argentinean" [ref=f2e360] [cursor=pointer]
+                      - option "Armenian" [ref=f2e362] [cursor=pointer]
+                      - option "Australian" [ref=f2e364] [cursor=pointer]
+                      - option "Austrian" [ref=f2e366] [cursor=pointer]
+                      - option "Azerbaijani" [ref=f2e368] [cursor=pointer]
+                      - option "Bahamian" [ref=f2e370] [cursor=pointer]
+                      - option "Bahraini" [ref=f2e372] [cursor=pointer]
+                      - option "Bangladeshi" [ref=f2e374] [cursor=pointer]
+                      - option "Barbadian" [ref=f2e376] [cursor=pointer]
+                      - option "Barbudans" [ref=f2e378] [cursor=pointer]
+                      - option "Batswana" [ref=f2e380] [cursor=pointer]
+                      - option "Belarusian" [ref=f2e382] [cursor=pointer]
+                      - option "Belgian" [ref=f2e384] [cursor=pointer]
+                      - option "Belizean" [ref=f2e386] [cursor=pointer]
+                      - option "Beninese" [ref=f2e388] [cursor=pointer]
+                      - option "Bhutanese" [ref=f2e390] [cursor=pointer]
+                      - option "Bolivian" [ref=f2e392] [cursor=pointer]
+                      - option "Bosnian" [ref=f2e394] [cursor=pointer]
+                      - option "Brazilian" [ref=f2e396] [cursor=pointer]
+                      - option "British" [ref=f2e398] [cursor=pointer]
+                      - option "Bruneian" [ref=f2e400] [cursor=pointer]
+                      - option "Bulgarian" [ref=f2e402] [cursor=pointer]
+                      - option "Burkinabe" [ref=f2e404] [cursor=pointer]
+                      - option "Burmese" [ref=f2e406] [cursor=pointer]
+                      - option "Burundian" [ref=f2e408] [cursor=pointer]
+                      - option "Cambodian" [ref=f2e410] [cursor=pointer]
+                      - option "Cameroonian" [ref=f2e412] [cursor=pointer]
+                      - option "Canadian" [ref=f2e414] [cursor=pointer]
+                      - option "Cape Verdean" [ref=f2e416] [cursor=pointer]
+                      - option "Central African" [ref=f2e418] [cursor=pointer]
+                      - option "Chadian" [ref=f2e420] [cursor=pointer]
+                      - option "Chilean" [ref=f2e422] [cursor=pointer]
+                      - option "Chinese" [ref=f2e424] [cursor=pointer]
+                      - option "Colombian" [ref=f2e426] [cursor=pointer]
+                      - option "Comoran" [ref=f2e428] [cursor=pointer]
+                      - option "Congolese" [ref=f2e430] [cursor=pointer]
+                      - option "Costa Rican" [ref=f2e432] [cursor=pointer]
+                      - option "Croatian" [ref=f2e434] [cursor=pointer]
+                      - option "Cuban" [ref=f2e436] [cursor=pointer]
+                      - option "Cypriot" [ref=f2e438] [cursor=pointer]
+                      - option "Czech" [ref=f2e440] [cursor=pointer]
+                      - option "Danish" [ref=f2e442] [cursor=pointer]
+                      - option "Djibouti" [ref=f2e444] [cursor=pointer]
+                      - option "Dominican" [ref=f2e446] [cursor=pointer]
+                      - option "Dutch" [ref=f2e448] [cursor=pointer]
+                      - option "East Timorese" [ref=f2e450] [cursor=pointer]
+                      - option "Ecuadorean" [ref=f2e452] [cursor=pointer]
+                      - option "Egyptian" [ref=f2e454] [cursor=pointer]
+                      - option "Emirian" [ref=f2e456] [cursor=pointer]
+                      - option "Equatorial Guinean" [ref=f2e458] [cursor=pointer]
+                      - option "Eritrean" [ref=f2e460] [cursor=pointer]
+                      - option "Estonian" [ref=f2e462] [cursor=pointer]
+                      - option "Ethiopian" [ref=f2e464] [cursor=pointer]
+                      - option "Fijian" [ref=f2e466] [cursor=pointer]
+                      - option "Filipino" [ref=f2e468] [cursor=pointer]
+                      - option "Finnish" [ref=f2e470] [cursor=pointer]
+                      - option "French" [ref=f2e472] [cursor=pointer]
+                      - option "Gabonese" [ref=f2e474] [cursor=pointer]
+                      - option "Gambian" [ref=f2e476] [cursor=pointer]
+                      - option "Georgian" [ref=f2e478] [cursor=pointer]
+                      - option "German" [ref=f2e480] [cursor=pointer]
+                      - option "Ghanaian" [ref=f2e482] [cursor=pointer]
+                      - option "Greek" [ref=f2e484] [cursor=pointer]
+                      - option "Grenadian" [ref=f2e486] [cursor=pointer]
+                      - option "Guatemalan" [ref=f2e488] [cursor=pointer]
+                      - option "Guinea-Bissauan" [ref=f2e490] [cursor=pointer]
+                      - option "Guinean" [ref=f2e492] [cursor=pointer]
+                      - option "Guyanese" [ref=f2e494] [cursor=pointer]
+                      - option "Haitian" [ref=f2e496] [cursor=pointer]
+                      - option "Herzegovinian" [ref=f2e498] [cursor=pointer]
+                      - option "Honduran" [ref=f2e500] [cursor=pointer]
+                      - option "Hungarian" [ref=f2e502] [cursor=pointer]
+                      - option "I-Kiribati" [ref=f2e504] [cursor=pointer]
+                      - option "Icelander" [ref=f2e506] [cursor=pointer]
+                      - option "Indian" [ref=f2e508] [cursor=pointer]
+                      - option "Indonesian" [ref=f2e510] [cursor=pointer]
+                      - option "Iranian" [ref=f2e512] [cursor=pointer]
+                      - option "Iraqi" [ref=f2e514] [cursor=pointer]
+                      - option "Irish" [ref=f2e516] [cursor=pointer]
+                      - option "Israeli" [ref=f2e518] [cursor=pointer]
+                      - option "Italian" [ref=f2e520] [cursor=pointer]
+                      - option "Ivorian" [ref=f2e522] [cursor=pointer]
+                      - option "Jamaican" [ref=f2e524] [cursor=pointer]
+                      - option "Japanese" [ref=f2e526] [cursor=pointer]
+                      - option "Jordanian" [ref=f2e528] [cursor=pointer]
+                      - option "Kazakhstani" [ref=f2e530] [cursor=pointer]
+                      - option "Kenyan" [ref=f2e532] [cursor=pointer]
+                      - option "Kittian and Nevisian" [ref=f2e534] [cursor=pointer]
+                      - option "Kuwaiti" [ref=f2e536] [cursor=pointer]
+                      - option "Kyrgyz" [ref=f2e538] [cursor=pointer]
+                      - option "Laotian" [ref=f2e540] [cursor=pointer]
+                      - option "Latvian" [ref=f2e542] [cursor=pointer]
+                      - option "Lebanese" [ref=f2e544] [cursor=pointer]
+                      - option "Liberian" [ref=f2e546] [cursor=pointer]
+                      - option "Libyan" [ref=f2e548] [cursor=pointer]
+                      - option "Liechtensteiner" [ref=f2e550] [cursor=pointer]
+                      - option "Lithuanian" [ref=f2e552] [cursor=pointer]
+                      - option "Luxembourger" [ref=f2e554] [cursor=pointer]
+                      - option "Macedonian" [ref=f2e556] [cursor=pointer]
+                      - option "Malagasy" [ref=f2e558] [cursor=pointer]
+                      - option "Malawian" [ref=f2e560] [cursor=pointer]
+                      - option "Malaysian" [ref=f2e562] [cursor=pointer]
+                      - option "Maldivan" [ref=f2e564] [cursor=pointer]
+                      - option "Malian" [ref=f2e566] [cursor=pointer]
+                      - option "Maltese" [ref=f2e568] [cursor=pointer]
+                      - option "Marshallese" [ref=f2e570] [cursor=pointer]
+                      - option "Mauritanian" [ref=f2e572] [cursor=pointer]
+                      - option "Mauritian" [ref=f2e574] [cursor=pointer]
+                      - option "Mexican" [ref=f2e576] [cursor=pointer]
+                      - option "Micronesian" [ref=f2e578] [cursor=pointer]
+                      - option "Moldovan" [ref=f2e580] [cursor=pointer]
+                      - option "Monacan" [ref=f2e582] [cursor=pointer]
+                      - option "Mongolian" [ref=f2e584] [cursor=pointer]
+                      - option "Moroccan" [ref=f2e586] [cursor=pointer]
+                      - option "Mosotho" [ref=f2e588] [cursor=pointer]
+                      - option "Motswana" [ref=f2e590] [cursor=pointer]
+                      - option "Mozambican" [ref=f2e592] [cursor=pointer]
+                      - option "Namibian" [ref=f2e594] [cursor=pointer]
+                      - option "Nauruan" [ref=f2e596] [cursor=pointer]
+                      - option "Nepalese" [ref=f2e598] [cursor=pointer]
+                      - option "New Zealander" [ref=f2e600] [cursor=pointer]
+                      - option "Nicaraguan" [ref=f2e602] [cursor=pointer]
+                      - option "Nigerian" [ref=f2e604] [cursor=pointer]
+                      - option "Nigerien" [ref=f2e606] [cursor=pointer]
+                      - option "North Korean" [ref=f2e608] [cursor=pointer]
+                      - option "Northern Irish" [ref=f2e610] [cursor=pointer]
+                      - option "Norwegian" [ref=f2e612] [cursor=pointer]
+                      - option "Omani" [ref=f2e614] [cursor=pointer]
+                      - option "Pakistani" [ref=f2e616] [cursor=pointer]
+                      - option "Palauan" [ref=f2e618] [cursor=pointer]
+                      - option "Panamanian" [ref=f2e620] [cursor=pointer]
+                      - option "Papua New Guinean" [ref=f2e622] [cursor=pointer]
+                      - option "Paraguayan" [ref=f2e624] [cursor=pointer]
+                      - option "Peruvian" [ref=f2e626] [cursor=pointer]
+                      - option "Polish" [ref=f2e628] [cursor=pointer]
+                      - option "Portuguese" [ref=f2e630] [cursor=pointer]
+                      - option "Qatari" [ref=f2e632] [cursor=pointer]
+                      - option "Romanian" [ref=f2e634] [cursor=pointer]
+                      - option "Russian" [ref=f2e636] [cursor=pointer]
+                      - option "Rwandan" [ref=f2e638] [cursor=pointer]
+                      - option "Saint Lucian" [ref=f2e640] [cursor=pointer]
+                      - option "Salvadoran" [ref=f2e642] [cursor=pointer]
+                      - option "Samoan" [ref=f2e644] [cursor=pointer]
+                      - option "San Marinese" [ref=f2e646] [cursor=pointer]
+                      - option "Sao Tomean" [ref=f2e648] [cursor=pointer]
+                      - option "Saudi" [ref=f2e650] [cursor=pointer]
+                      - option "Scottish" [ref=f2e652] [cursor=pointer]
+                      - option "Senegalese" [ref=f2e654] [cursor=pointer]
+                      - option "Serbian" [ref=f2e656] [cursor=pointer]
+                      - option "Seychellois" [ref=f2e658] [cursor=pointer]
+                      - option "Sierra Leonean" [ref=f2e660] [cursor=pointer]
+                      - option "Singaporean" [ref=f2e662] [cursor=pointer]
+                      - option "Slovakian" [ref=f2e664] [cursor=pointer]
+                      - option "Slovenian" [ref=f2e666] [cursor=pointer]
+                      - option "Solomon Islander" [ref=f2e668] [cursor=pointer]
+                      - option "Somali" [ref=f2e670] [cursor=pointer]
+                      - option "South African" [ref=f2e672] [cursor=pointer]
+                      - option "South Korean" [ref=f2e674] [cursor=pointer]
+                      - option "Spanish" [ref=f2e676] [cursor=pointer]
+                      - option "Sri Lankan" [ref=f2e678] [cursor=pointer]
+                      - option "Sudanese" [ref=f2e680] [cursor=pointer]
+                      - option "Surinamer" [ref=f2e682] [cursor=pointer]
+                      - option "Swazi" [ref=f2e684] [cursor=pointer]
+                      - option "Swedish" [ref=f2e686] [cursor=pointer]
+                      - option "Swiss" [ref=f2e688] [cursor=pointer]
+                      - option "Syrian" [ref=f2e690] [cursor=pointer]
+                      - option "Taiwanese" [ref=f2e692] [cursor=pointer]
+                      - option "Tajik" [ref=f2e694] [cursor=pointer]
+                      - option "Tanzanian" [ref=f2e696] [cursor=pointer]
+                      - option "Thai" [ref=f2e698] [cursor=pointer]
+                      - option "Togolese" [ref=f2e700] [cursor=pointer]
+                      - option "Tongan" [ref=f2e702] [cursor=pointer]
+                      - option "Trinidadian or Tobagonian" [ref=f2e704] [cursor=pointer]
+                      - option "Tunisian" [ref=f2e706] [cursor=pointer]
+                      - option "Turkish" [ref=f2e708] [cursor=pointer]
+                      - option "Tuvaluan" [ref=f2e710] [cursor=pointer]
+                      - option "Ugandan" [ref=f2e712] [cursor=pointer]
+                      - option "Ukrainian" [ref=f2e714] [cursor=pointer]
+                      - option "Uruguayan" [ref=f2e716] [cursor=pointer]
+                      - option "Uzbekistani" [ref=f2e718] [cursor=pointer]
+                      - option "Venezuelan" [ref=f2e720] [cursor=pointer]
+                      - option "Vietnamese" [ref=f2e722] [cursor=pointer]
+                      - option "Welsh" [ref=f2e724] [cursor=pointer]
+                      - option "Yemenite" [ref=f2e726] [cursor=pointer]
+                      - option "Zambian" [ref=f2e728] [cursor=pointer]
+                      - option "Zimbabwean" [ref=f2e730] [cursor=pointer]
+                - generic [ref=f2e243]:
+                  - generic [ref=f2e244]: Marital Status
+                  - generic [ref=f2e248] [cursor=pointer]:
+                    - generic [ref=f2e249]: "-- Select --"
+                    - generic [ref=f2e250]: 
+              - generic [ref=f2e252]:
+                - generic [ref=f2e254]:
+                  - generic [ref=f2e255]: Date of Birth
+                  - generic [ref=f2e259]:
+                    - textbox "yyyy-dd-mm" [ref=f2e260]
+                    - generic [ref=f2e261] [cursor=pointer]: 
+                - generic [ref=f2e263]:
+                  - generic [ref=f2e264]: Gender
+                  - generic [ref=f2e266]:
+                    - generic [ref=f2e270] [cursor=pointer]:
+                      - radio "Male" [ref=f2e271]
+                      - text: Male
+                    - generic [ref=f2e276] [cursor=pointer]:
+                      - radio "Female" [ref=f2e277]
+                      - text: Female
+            - separator [ref=f2e279]
+            - generic [ref=f2e280]:
+              - paragraph [ref=f2e281]: "* Required"
+              - button "Save" [ref=f2e282] [cursor=pointer]
+        - generic [ref=f2e283]:
+          - separator [ref=f2e284]
+          - generic [ref=f2e285]:
+            - heading "Custom Fields" [level=6] [ref=f2e286]
+            - separator [ref=f2e287]
+            - generic [ref=f2e288]:
+              - generic [ref=f2e290]:
+                - generic [ref=f2e292]:
+                  - generic [ref=f2e293]: Blood Type
+                  - generic [ref=f2e297] [cursor=pointer]:
+                    - generic [ref=f2e298]: "-- Select --"
+                    - generic [ref=f2e299]: 
+                - generic [ref=f2e302]:
+                  - generic [ref=f2e303]: Test_Field
+                  - textbox [ref=f2e306]
+              - separator [ref=f2e307]
+              - button "Save" [ref=f2e309] [cursor=pointer]
+        - generic [ref=f2e310]:
+          - separator [ref=f2e311]
+          - generic [ref=f2e313]:
+            - heading "Attachments" [level=6] [ref=f2e314]
+            - button " Add" [ref=f2e315] [cursor=pointer]:
+              - generic [ref=f2e316]: 
+              - text: Add
+          - generic [ref=f2e317]:
+            - separator [ref=f2e318]
+            - generic [ref=f2e319]: No Records Found
+          - table [ref=f2e322]:
+            - rowgroup [ref=f2e323]:
+              - row [ref=f2e324]:
+                - columnheader "" [ref=f2e325]:
+                  - generic [ref=f2e327] [cursor=pointer]:
+                    - checkbox "" [ref=f2e328]
+                    - generic [ref=f2e329]: 
+                - columnheader "File Name" [ref=f2e331]
+                - columnheader "Description" [ref=f2e332]
+                - columnheader "Size" [ref=f2e333]
+                - columnheader "Type" [ref=f2e334]
+                - columnheader "Date Added" [ref=f2e335]
+                - columnheader "Added By" [ref=f2e336]
+                - columnheader "Actions" [ref=f2e337]
+            - rowgroup
+    - generic [ref=f2e338]:
+      - paragraph [ref=f2e339]: OrangeHRM OS 5.9
+      - paragraph [ref=f2e340]:
+        - text: © 2005 - 2026
+        - link "OrangeHRM, Inc" [ref=f2e341] [cursor=pointer]:
+          - /url: http://www.orangehrm.com
+        - text: . All rights reserved.

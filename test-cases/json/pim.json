@@ -1,0 +1,4897 @@
+{
+  "$schema": "../schema/test-cases.schema.json",
+  "module": "PIM",
+  "moduleCode": "PIM",
+  "source": "requirements/md/pim.md",
+  "version": "1.0.0",
+  "generatedBy": "test-case-designer agent, reviewed by test-case-reviewer agent",
+  "notes": [
+    "Target is the shared public demo: every case creates its own employees via API and deletes them in teardown; configuration changes are restored.",
+    "Variants inside testData are one case each (data-driven), not separate cases, to keep the suite duplicate-free.",
+    "UI cases verify on-screen behaviour and messages; API cases verify status codes, payload contract and server-side rules. A rule appears in both layers only when both are meaningful.",
+    "API endpoints follow OrangeHRM 5.x conventions; the planner agent confirms each one against the live app before automation.",
+    "PIM-NFR-04 (toast auto-dismiss), PIM-NFR-06 (browser matrix) and PIM-NFR-07 (performance) are covered by the cross-browser run and the toast component checks rather than dedicated cases.",
+    "Automation issue PIM-UI-013 (PIM-FR-004-AC4): the 'Delete Selected' button carries no selected count; the count is shown as separate text '(2) Records Selected'. Test kept with the BRD assertion and marked test.fail().",
+    "Automation issue PIM-UI-018 (PIM-FR-005-AC6): names are saved untrimmed; '  Trim  ' is stored and returned by the API with its spaces (the header only looks trimmed because HTML collapses whitespace). Marked test.fail().",
+    "Automation issue PIM-UI-026 (PIM-FR-006-AC4): Change Profile Picture offers only '+' and Save, no control to delete the photo; replacing works ('Successfully Updated'). Marked test.fail().",
+    "Automation issue PIM-UI-033 (PIM-VAL-008): with Create Login Details on and all login fields blank, Confirm Password shows 'Passwords do not match' instead of 'Required' (Username and Password show 'Required'). Marked test.fail().",
+    "Automation issue PIM-API-007 / PIM-API-008 (GET variant): GET /pim/employees/{empNumber} for a deleted or non-existent employee returns 422 'Invalid Parameter' (invalidParamKeys [empNumber]) instead of 404. DELETE of a non-existent id returns 404 'Records Not Found' as expected. Marked test.fail().",
+    "Verified during automation: an image over 1 MB shows 'Attachment Size Exceeded' and blocks Save (the oversized image is still previewed); a past employee's Employee Id is rejected with 'Employee Id already exists' like a current one; self-delete by an Admin over the API returns 422 invalidParamKeys [ids].",
+    "Automation note: the Add Employee form pre-fills the next Employee Id but does not reserve it; on the shared demo a parallel save can take it first and Save then fails with 422. UI tests therefore always enter their own unique Employee Id.",
+    "Automation issue PIM-UI-035 (PIM-FR-008-AC5): after saving a new First Name the profile header keeps the old name until the page is reloaded; after a reload and in the Employee List the new name is shown. Header check kept as a soft BRD assertion, test marked test.fail().",
+    "Automation issue PIM-UI-039 (PIM-FR-011-AC5): with Country 'United States' the State/Province control stays a free-text input; no drop-down of states appears. Save ('Successfully Updated') and persistence after reload work. Drop-down check kept as a soft BRD assertion, test marked test.fail().",
+    "Automation issue PIM-API-011 (PIM-VAL-014, variant workEmail = otherEmail): PUT /pim/employee/{n}/contact-details returns 400 'Work Email and Other Email Cannot Be The Same' instead of 422; nothing is stored. Malformed and duplicate work emails return 422 invalidParamKeys [workEmail] as expected. Variant marked test.fail().",
+    "Automation issue PIM-API-015 (PIM-VAL-019): POST /pim/employees/{n}/immigrations with expiryDate 2024-01-01 before issuedDate 2025-01-01 returns 200 and stores the record; only the UI enforces 'Expiry date should be after issued date'. Marked test.fail().",
+    "Verified during automation (profile tabs): editing Employee Id on Personal Details to another employee's id IS rejected with 'Employee Id already exists' and no PUT is sent (the planner's discrepancy did not reproduce; PIM-UI-037 passes). PUT personal-details replaces the record: an omitted employeeId is stored as null, so API callers must resend it. POST emergency-contacts without the three phone keys returns 422 invalidParamKeys [homePhone, officePhone, mobilePhone], but with all three as empty strings it returns 200 and stores a contact without a phone (PIM-API-013 covers the omitted-keys case).",
+    "Automation issue PIM-API-016 (PIM-BR-09): POST salary-components with an amount outside the pay grade range returns 400 {\"message\":\"Salary should be within min and max\"} instead of 422; nothing is stored. Below/above variants marked test.fail(); the in-range variant passes. Case data (USD 1000-5000) mapped onto the seed grade 'Grade 1' (USD 50000-60000), as in PIM-UI-060.",
+    "Automation issue PIM-API-017 (PIM-FR-021-AC2/AC3, PIM-BR-08): the supervisors API does not enforce the Report-to rules. Self assignment returns 200 and stores a self relation; the same supervisor with the same method returns 500 'Unexpected Error Occurred' (with another method it returns 200 and stores a second row). Both variants marked test.fail(). The UI does block both (PIM-UI-064/065 pass): the autocomplete (report-to/allowed) never offers self or an assigned supervisor and free text shows 'Invalid'.",
+    "Verified during automation (Job/Termination/Salary/Report-to/Access): contract message is 'End date should be after Start date' (capital S); salary out-of-range message 'Should be within Min/Max values' with hint 'Min: 50000 - Max: 60000'; Pay Frequency option 'Monthly on first pay of month.' has a trailing period; Job Specification is the file name with a download icon button (not an anchor) and the download keeps the file name; Termination Date is empty by default and the Job tab reloads itself after Terminate/Activate; '(Past Employee)' appears in the Employee Name autocomplete only when Include allows past employees, and after the last name in list rows and the profile header.",
+    "Verified during automation (access control): an ESS user gets HTTP 403 'Credential Required' for /pim/viewEmployeeList, /pim/addEmployee, /pim/configurePim and /pim/viewDefinedPredefinedReports; /pim/viewOptionalFields is 404; /pim/viewPimModule opens the user's own profile; another employee's profile tabs show 'No Records Found'. A supervisor has no Salary tab (/pim/viewSalaryList is 403) and sees Job and Report-to without any buttons (the contract switch stays clickable but nothing can be saved). After Admin removes the relation, reloading the Employee List in the supervisor's open session returns 403 'Credential Required' and a fresh login has no PIM menu.",
+    "Automation note (Job tab): the contract file input rejects a .bin file with 'File type not allowed' before checking its size, so the >1 MB case writes a 1.3 MB PDF at runtime. PIM-UI-053 creates its own job title with a specification via POST /admin/job-titles {title, description, specification: {name, type, size, base64}} and deletes it in teardown. Drop-down options are compared with live master data that other demo users edit concurrently; the comparison retries on a fresh page and fresh data (exact equality kept).",
+    "Automation issue PIM-UI-068 (PIM-VAL-028): the Work Experience date message reads \"To date should be after from date\" (lower-case \"from\"); the BRD writes \"From\". The test asserts the exact app text and carries an issue annotation (wording only, behaviour matches).",
+    "Automation issue PIM-UI-070 (PIM-FR-022-AC3): the UI enforces one-per-skill by removing assigned skills from the drop-down (asserted, passes), but POST /pim/employees/{n}/skills with an already assigned skill returns 200 and overwrites Years of Experience. Covered by the variant \"(duplicate sent to the server)\", marked test.fail().",
+    "Automation issue PIM-UI-087 (PIM-FR-030-AC1): Selection Criteria offers \"Age Group\", not \"Age Range\"; the other 12 BRD criteria and all 16 display field groups are present (group order differs from the BRD). Covered by the variant \"(BRD criterion \\\"Age Range\\\")\", marked test.fail().",
+    "Automation issue PIM-API-018 (PIM-FR-027-AC1): POST /pim/reporting-methods accepts a blank name and an existing name (200, rows created; the test registers and deletes them), while /pim/termination-reasons rejects both with 422 invalidParamKeys [name]; 101 characters are rejected by both. The two reporting-methods variants are marked test.fail().",
+    "Verified during automation (group D): Fluency and Competency offer their values only after a Language is chosen; a 201-character attachment comment shows \"Should not exceed 200 characters\" on blur and 200 clears it; attachments download from /pim/viewAttachment/empNumber/{n}/attachId/{id} byte-identical to the upload; CSV-imported employees get an empty Employee Id (looked up and deleted by a unique name token); the Termination Reasons add page renders its name list inline while Reporting Methods fetches ?limit=0; in-use config entries have no row checkbox and their trash shows an error toast without a dialog; an ESS session gets 200 with empty data on GET /pim/employees and 403 {status:403, message:Unauthorized} on POST/DELETE.",
+    "Automation issue PIM-UI-076 (PIM-FR-009-AC2): saving the Custom Fields form on Personal Details shows \"Successfully Saved\" instead of \"Successfully Updated\" (value saved and retained after reload). Toast check kept as a soft BRD assertion, test marked test.fail().",
+    "Automation issue PIM-UI-080 (PIM-FR-024-AC3): the employee profile tabs are fixed when a session logs in. After \"Show US Tax Exemptions menu\" is switched on (API showTaxExemptions=true, \"Successfully Saved\") the Admin session that changed it shows no Tax Exemptions tab until it logs in again; a session logged in after the change shows the tab (it opens /pim/viewUsTaxExemptions/empNumber/<n>), and a session logged in while it was on keeps the tab after it is switched off. /pim/viewUsTaxExemptions/empNumber/<n> loads whether the switch is on or off. BRD check kept as a soft assertion in the changing session, test marked test.fail().",
+    "Verified during automation (Custom Fields): the Screen drop-down offers 11 screens (the 10 of PIM-FR-025-AC1 plus Tax Exemptions); the add URL is /pim/saveCustomFields; a field with a stored value cannot be deleted (error toast \"Custom field(s) in use\", no dialog) until the value is cleared; \"Already exists\" is exact-case only; POST /pim/custom-fields accepts duplicate names and a Drop Down without options (200), so only the UI enforces them.",
+    "Automation note (Custom/Optional Fields): both are global settings on the shared demo. Tests read the current state first and restore it in fixture teardown (optionalFieldsGuard PUTs the settings back; customFields clears values and deletes only fields it created). custom-fields.spec.ts, optional-fields.spec.ts and optional-fields-api.spec.ts (PIM-API-019) are excluded from the parallel Playwright projects and run in the `global-config` project (one worker, after everything else; `npm test` runs both phases). While a test has the Tax Exemptions switch on, any Admin session that logs in keeps the tab for its lifetime. PIM-UI-078 stays Manual."
+  ],
+  "testCases": [
+    {
+      "id": "PIM-UI-001",
+      "title": "Employee List opens with search panel, expected columns, record count and current employees only",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P1",
+      "feature": "Employee List",
+      "requirementIds": [
+        "PIM-FR-001-AC1",
+        "PIM-FR-001-AC2",
+        "PIM-FR-001-AC3"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "steps": [
+        {
+          "action": "Click PIM in the side menu",
+          "expected": "Employee Information search panel and results table are shown"
+        },
+        {
+          "action": "Read the table header",
+          "expected": "Columns: checkbox, Id, First (& Middle) Name, Last Name, Job Title, Employment Status, Sub Unit, Supervisor, Actions"
+        },
+        {
+          "action": "Read the text above the table",
+          "expected": "\"(N) Records Found\" with N > 0"
+        },
+        {
+          "action": "Check the Include filter",
+          "expected": "Defaults to \"Current Employees Only\""
+        }
+      ],
+      "expectedResult": "Landing page matches PIM-FR-001",
+      "tags": [
+        "@smoke",
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/employee-list.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-002",
+      "title": "Row action icons and row click open the expected employee",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Employee List",
+      "requirementIds": [
+        "PIM-FR-001-AC4"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "steps": [
+        {
+          "action": "Search the created employee by Employee Id",
+          "expected": "One row is shown with trash and pencil icons in Actions"
+        },
+        {
+          "action": "Click the pencil icon",
+          "expected": "Personal Details of that employee open"
+        },
+        {
+          "action": "Go back (the list reloads with default criteria), search again and click the row outside the icons (e.g. the Last Name cell)",
+          "expected": "The same employee profile opens"
+        }
+      ],
+      "expectedResult": "Edit icon and row click both open the profile",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/employee-list.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-003",
+      "title": "Search by Employee Id or by name returns only the matching employee",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P1",
+      "feature": "Employee List",
+      "requirementIds": [
+        "PIM-FR-002-AC1",
+        "PIM-FR-002-AC3",
+        "PIM-E2E-01"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "by": "Employee Id"
+          },
+          {
+            "by": "Employee Name (autocomplete pick)"
+          },
+          {
+            "by": "Employee Name partial free text"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "action": "Enter the criterion for the variant and click Search",
+          "expected": "Exactly one row for the created employee; count \"(1) Record Found\""
+        }
+      ],
+      "expectedResult": "Each search field filters correctly",
+      "tags": [
+        "@smoke",
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/employee-list.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-004",
+      "title": "Combined drop-down filters apply AND logic across Employment Status, Job Title and Sub Unit",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Employee List",
+      "requirementIds": [
+        "PIM-FR-002-AC2",
+        "PIM-FR-002-AC3"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "Employee created via API with Job Title, Employment Status and Sub Unit set (master data from Admin)"
+      ],
+      "steps": [
+        {
+          "action": "Open each drop-down",
+          "expected": "Options come from Admin master data"
+        },
+        {
+          "action": "Select the employee's Job Title, Employment Status and Sub Unit plus their Employee Id, click Search",
+          "expected": "Only the created employee is returned"
+        },
+        {
+          "action": "Change Employment Status to a different value and search again",
+          "expected": "No Records Found"
+        }
+      ],
+      "expectedResult": "All criteria must match",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/employee-list.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-005",
+      "title": "Searching by a parent Sub Unit also returns employees of its child sub units",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P3",
+      "feature": "Employee List",
+      "requirementIds": [
+        "PIM-FR-002-AC4"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "Organization structure has a parent sub unit with a child (seed data on demo)",
+        "Employee created in the child sub unit"
+      ],
+      "steps": [
+        {
+          "action": "Filter by the parent Sub Unit and the employee name",
+          "expected": "The child-unit employee is in the results"
+        }
+      ],
+      "expectedResult": "Sub unit hierarchy is honoured",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/employee-list.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-006",
+      "title": "Search with no matching record shows No Records Found in count and info toast",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Employee List",
+      "requirementIds": [
+        "PIM-FR-002-AC5"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "testData": {
+        "employeeId": "<random 10 chars never used>"
+      },
+      "steps": [
+        {
+          "action": "Enter a non-existent Employee Id and click Search",
+          "expected": "Table is empty, count shows \"No Records Found\", info toast \"No Records Found\""
+        }
+      ],
+      "expectedResult": "Empty result is communicated clearly",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/employee-list.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-007",
+      "title": "Reset clears every search criterion and reloads the default list",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Employee List",
+      "requirementIds": [
+        "PIM-FR-002-AC6"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "steps": [
+        {
+          "action": "Fill Employee Name, Employee Id and choose Employment Status and Include = Past Employees Only, click Search",
+          "expected": "Filtered results"
+        },
+        {
+          "action": "Click Reset",
+          "expected": "All fields are empty/default (Include = Current Employees Only) and the default list with its full count is shown"
+        }
+      ],
+      "expectedResult": "Reset restores the landing state",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/employee-list.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-008",
+      "title": "Include filter separates current and past employees after termination and re-activation",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P1",
+      "feature": "Employee List",
+      "requirementIds": [
+        "PIM-FR-002-AC7",
+        "PIM-FR-017-AC3",
+        "PIM-FR-018-AC2",
+        "PIM-E2E-06"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "steps": [
+        {
+          "action": "Terminate the employee via API",
+          "expected": "Termination saved"
+        },
+        {
+          "action": "Search by Employee Id with Include = Current Employees Only",
+          "expected": "No Records Found"
+        },
+        {
+          "action": "Search with Include = Past Employees Only, then Current and Past Employees",
+          "expected": "Employee is listed in both"
+        },
+        {
+          "action": "Re-activate via the Job tab, search with Current Employees Only",
+          "expected": "Employee is listed again"
+        }
+      ],
+      "expectedResult": "Include options honour employment status",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/employee-list.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-009",
+      "title": "Sorting a column ascending and descending orders the rows accordingly",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Employee List",
+      "requirementIds": [
+        "PIM-FR-003-AC1",
+        "PIM-FR-003-AC2"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "Three employees created via API with distinct ids and last names sharing a unique token (deleted in teardown)"
+      ],
+      "testData": {
+        "columns": [
+          "Id",
+          "Last Name"
+        ]
+      },
+      "steps": [
+        {
+          "action": "Open the sort menu of the column header",
+          "expected": "Ascending and Descending options are offered"
+        },
+        {
+          "action": "Choose Ascending",
+          "expected": "Column values on the page are in ascending order"
+        },
+        {
+          "action": "Choose Descending",
+          "expected": "Column values are in descending order"
+        }
+      ],
+      "expectedResult": "Sorting works for each tested column",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/employee-list.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-010",
+      "title": "Pagination shows at most 50 rows per page and keeps search criteria between pages",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Employee List",
+      "requirementIds": [
+        "PIM-FR-003-AC3",
+        "PIM-FR-003-AC4"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "51 employees created via API with a shared unique last name, one of them terminated, so more than 50 records match Include = Current and Past Employees (deleted in teardown)"
+      ],
+      "steps": [
+        {
+          "action": "Search with Include = Current and Past Employees",
+          "expected": "Page 1 shows 50 rows and pagination controls"
+        },
+        {
+          "action": "Go to page 2 with the next arrow",
+          "expected": "Page 2 rows differ from page 1; Include still shows Current and Past Employees and the count is unchanged"
+        }
+      ],
+      "expectedResult": "Pagination is correct and stateful",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/employee-list.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-011",
+      "title": "Delete confirmation dialog shows the warning and No, Cancel keeps the record",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Delete Employee",
+      "requirementIds": [
+        "PIM-FR-004-AC1",
+        "PIM-FR-004-AC2"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "steps": [
+        {
+          "action": "Search the employee and click its trash icon",
+          "expected": "Dialog \"Are you Sure?\" with the permanent-deletion text and buttons \"No, Cancel\" / \"Yes, Delete\""
+        },
+        {
+          "action": "Click \"No, Cancel\"",
+          "expected": "Dialog closes; the row is still listed"
+        }
+      ],
+      "expectedResult": "Cancel does not delete",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/delete-employee.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-012",
+      "title": "Deleting a single employee shows Successfully Deleted and removes them from every search",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P1",
+      "feature": "Delete Employee",
+      "requirementIds": [
+        "PIM-FR-004-AC3",
+        "PIM-BR-04",
+        "PIM-E2E-07"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test"
+      ],
+      "steps": [
+        {
+          "action": "Search the employee, click trash, click \"Yes, Delete\"",
+          "expected": "Toast \"Successfully Deleted\""
+        },
+        {
+          "action": "Search by Employee Id with Include = Current and Past Employees",
+          "expected": "No Records Found"
+        }
+      ],
+      "expectedResult": "Employee is permanently deleted",
+      "tags": [
+        "@smoke",
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/delete-employee.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-013",
+      "title": "Bulk delete removes all selected employees and header checkbox toggles the page selection",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Delete Employee",
+      "requirementIds": [
+        "PIM-FR-004-AC4",
+        "PIM-FR-004-AC5"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "Three employees created via API with a common unique last name"
+      ],
+      "steps": [
+        {
+          "action": "Search by the common last name",
+          "expected": "Three rows"
+        },
+        {
+          "action": "Tick the header checkbox, then untick it",
+          "expected": "All rows selected, then none"
+        },
+        {
+          "action": "Tick two rows",
+          "expected": "\"Delete Selected\" button shows \"(2)\""
+        },
+        {
+          "action": "Click Delete Selected and confirm",
+          "expected": "Toast \"Successfully Deleted\"; one row remains"
+        }
+      ],
+      "expectedResult": "Bulk delete deletes exactly the selected records",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/delete-employee.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-014",
+      "title": "Logged-in Admin cannot select or delete their own employee record",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P1",
+      "feature": "Delete Employee",
+      "requirementIds": [
+        "PIM-FR-004-AC6",
+        "PIM-BR-06"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "steps": [
+        {
+          "action": "Search for the logged-in admin's own employee by Employee Id (resolved from Admin > User Management for the admin username)",
+          "expected": "Row is listed"
+        },
+        {
+          "action": "Inspect the row and try to tick its checkbox",
+          "expected": "No delete (trash) action; the checkbox is rendered but ticking it does not select the row: no \"Delete Selected\" button appears and the count stays \"(1) Record Found\""
+        }
+      ],
+      "expectedResult": "Self-deletion is prevented",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/delete-employee.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-015",
+      "title": "Add Employee form shows required fields, photo placeholder and a pre-filled editable Employee Id",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Add Employee",
+      "requirementIds": [
+        "PIM-FR-005-AC1",
+        "PIM-FR-005-AC2",
+        "PIM-NFR-03"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "steps": [
+        {
+          "action": "Open PIM > Add Employee",
+          "expected": "First Name*, Middle Name, Last Name*, Employee Id, profile picture placeholder and \"* Required\" hint are shown"
+        },
+        {
+          "action": "Inspect Employee Id",
+          "expected": "Pre-filled with a numeric id"
+        },
+        {
+          "action": "Overwrite Employee Id",
+          "expected": "Field accepts the new value"
+        }
+      ],
+      "expectedResult": "Form layout matches the BRD",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/add-employee.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-016",
+      "title": "Adding an employee with first and last name saves and opens Personal Details, and the employee is searchable",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P1",
+      "feature": "Add Employee",
+      "requirementIds": [
+        "PIM-FR-005-AC3",
+        "PIM-FR-005-AC4",
+        "PIM-BR-01",
+        "PIM-E2E-01"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "testData": {
+        "firstName": "Auto",
+        "middleName": "",
+        "lastName": "Emp<unique>",
+        "employeeId": "<unique>"
+      },
+      "steps": [
+        {
+          "action": "Enter First Name, Last Name and a unique Employee Id, click Save",
+          "expected": "Toast \"Successfully Saved\"; Personal Details tab opens with the names in the header"
+        },
+        {
+          "action": "Search the Employee List by Employee Id and by name",
+          "expected": "The new employee is found both ways"
+        }
+      ],
+      "expectedResult": "Employee is created with mandatory data only",
+      "tags": [
+        "@smoke",
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/add-employee.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-017",
+      "title": "Cancel on Add Employee returns to the list without creating a record",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P3",
+      "feature": "Add Employee",
+      "requirementIds": [
+        "PIM-FR-005-AC5"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "testData": {
+        "lastName": "Cancel<unique>"
+      },
+      "steps": [
+        {
+          "action": "Fill First and Last Name, click Cancel",
+          "expected": "Employee List is shown"
+        },
+        {
+          "action": "Search by the last name",
+          "expected": "No Records Found"
+        }
+      ],
+      "expectedResult": "Nothing is created",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/add-employee.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-018",
+      "title": "Leading and trailing spaces in names are trimmed on save",
+      "layer": "UI",
+      "type": "Edge",
+      "priority": "P3",
+      "feature": "Add Employee",
+      "requirementIds": [
+        "PIM-FR-005-AC6"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "testData": {
+        "firstName": "  Trim  ",
+        "lastName": "  Space<unique>  "
+      },
+      "steps": [
+        {
+          "action": "Save the employee with padded names",
+          "expected": "Saved"
+        },
+        {
+          "action": "Check Personal Details and the list row",
+          "expected": "Names show without leading/trailing spaces"
+        }
+      ],
+      "expectedResult": "Names are stored trimmed",
+      "tags": [
+        "@edge"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/add-employee.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-019",
+      "title": "Saving Add Employee with blank First and Last Name shows Required on both",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P1",
+      "feature": "Add Employee",
+      "requirementIds": [
+        "PIM-VAL-001",
+        "PIM-VAL-003",
+        "PIM-BR-01",
+        "PIM-E2E-03"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "steps": [
+        {
+          "action": "Open Add Employee and click Save without input",
+          "expected": "\"Required\" under First Name and Last Name; no record created"
+        }
+      ],
+      "expectedResult": "Mandatory names enforced",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/add-employee.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-020",
+      "title": "Name fields accept 30 characters and reject 31 with Should not exceed 30 characters",
+      "layer": "UI",
+      "type": "Edge",
+      "priority": "P2",
+      "feature": "Add Employee",
+      "requirementIds": [
+        "PIM-VAL-001",
+        "PIM-VAL-002",
+        "PIM-VAL-003"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "field": "First Name"
+          },
+          {
+            "field": "Middle Name"
+          },
+          {
+            "field": "Last Name"
+          }
+        ],
+        "valid": "<30 letters>",
+        "invalid": "<31 letters>"
+      },
+      "steps": [
+        {
+          "action": "Type 31 characters into the field",
+          "expected": "\"Should not exceed 30 characters\" under that field"
+        },
+        {
+          "action": "Reduce to 30 characters",
+          "expected": "Message disappears"
+        }
+      ],
+      "expectedResult": "Boundary of 30 characters per name field",
+      "tags": [
+        "@edge"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/add-employee.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-021",
+      "title": "Employee Id that already exists (current or past employee) is rejected",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P1",
+      "feature": "Add Employee",
+      "requirementIds": [
+        "PIM-VAL-004",
+        "PIM-BR-02",
+        "PIM-E2E-03"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "One current and one terminated employee created via API"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "reuseIdOf": "current employee"
+          },
+          {
+            "reuseIdOf": "past employee"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "action": "Enter names and the existing Employee Id",
+          "expected": "\"Employee Id already exists\"; Save does not create a record"
+        }
+      ],
+      "expectedResult": "Employee Id is unique across current and past employees",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/add-employee.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-022",
+      "title": "Employee Id longer than 10 characters is rejected",
+      "layer": "UI",
+      "type": "Edge",
+      "priority": "P3",
+      "feature": "Add Employee",
+      "requirementIds": [
+        "PIM-VAL-004"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "testData": {
+        "employeeId": "<11 characters>"
+      },
+      "steps": [
+        {
+          "action": "Enter an 11 character Employee Id",
+          "expected": "\"Should not exceed 10 characters\""
+        }
+      ],
+      "expectedResult": "Employee Id length boundary enforced",
+      "tags": [
+        "@edge"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/add-employee.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-023",
+      "title": "Names with unicode, apostrophes and script-like text are stored and rendered literally",
+      "layer": "UI",
+      "type": "Edge",
+      "priority": "P2",
+      "feature": "Add Employee",
+      "requirementIds": [
+        "PIM-FR-005-AC3",
+        "PIM-BR-01"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "firstName": "José-Ñuño",
+            "lastName": "O'Brien<unique>"
+          },
+          {
+            "firstName": "<script>alert(1)</script>",
+            "lastName": "Xss<unique>"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "action": "Save the employee with the variant names",
+          "expected": "Toast \"Successfully Saved\""
+        },
+        {
+          "action": "View header, Personal Details and list row",
+          "expected": "Text is shown exactly as entered; no script runs"
+        }
+      ],
+      "expectedResult": "Special characters are safe and preserved",
+      "tags": [
+        "@edge",
+        "@security"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/add-employee.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-024",
+      "title": "Valid profile photo is previewed on Add Employee and shown on the profile after save",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Profile Photo",
+      "requirementIds": [
+        "PIM-FR-006-AC1",
+        "PIM-FR-006-AC2",
+        "PIM-E2E-08"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "testData": {
+        "file": "test-data/files/photo-valid.png (200x200, 84 KB)"
+      },
+      "steps": [
+        {
+          "action": "On Add Employee, upload valid.png",
+          "expected": "Preview replaces the placeholder"
+        },
+        {
+          "action": "Save the employee",
+          "expected": "Profile header shows the uploaded photo"
+        }
+      ],
+      "expectedResult": "Photo upload works",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/profile-photo.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-025",
+      "title": "Photo with a disallowed type or over 1 MB is rejected and save is blocked",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Profile Photo",
+      "requirementIds": [
+        "PIM-FR-006-AC3",
+        "PIM-VAL-005",
+        "PIM-BR-11"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "file": "test-data/files/not-an-image.pdf",
+            "message": "File type not allowed"
+          },
+          {
+            "file": "test-data/files/photo-large.png (1.15 MB)",
+            "message": "Attachment Size Exceeded"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "action": "Upload the variant file on Add Employee",
+          "expected": "The variant message is shown"
+        },
+        {
+          "action": "Click Save",
+          "expected": "Employee is not saved while the error is present"
+        }
+      ],
+      "expectedResult": "Photo type and size rules enforced",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/profile-photo.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-026",
+      "title": "Profile photo can be replaced and deleted from Change Profile Picture",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P3",
+      "feature": "Profile Photo",
+      "requirementIds": [
+        "PIM-FR-006-AC4"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "steps": [
+        {
+          "action": "Click the photo in the profile header",
+          "expected": "Change Profile Picture opens"
+        },
+        {
+          "action": "Upload a different valid image and Save",
+          "expected": "\"Successfully Updated\"; new photo shown"
+        },
+        {
+          "action": "Delete the photo and confirm",
+          "expected": "Default placeholder shown"
+        }
+      ],
+      "expectedResult": "Photo lifecycle from profile works",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/profile-photo.spec.ts"
+      },
+      "testData": {
+        "initialPhoto": "test-data/files/photo-valid.png",
+        "replacement": "test-data/files/photo-alt.png (120x120)"
+      }
+    },
+    {
+      "id": "PIM-UI-027",
+      "title": "Create Login Details toggle reveals login fields with Enabled default and a password strength meter",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Create Login",
+      "requirementIds": [
+        "PIM-FR-007-AC1",
+        "PIM-FR-007-AC5"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "steps": [
+        {
+          "action": "Open Add Employee",
+          "expected": "Username, Status, Password, Confirm Password are hidden"
+        },
+        {
+          "action": "Turn on Create Login Details",
+          "expected": "Username*, Status (Enabled selected), Password*, Confirm Password* appear"
+        },
+        {
+          "action": "Type a weak then a strong password",
+          "expected": "Strength indicator changes from Very Weak towards Strongest"
+        },
+        {
+          "action": "Turn the toggle off",
+          "expected": "Login fields are hidden again"
+        }
+      ],
+      "expectedResult": "Toggle behaviour matches the BRD",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/create-login.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-028",
+      "title": "Employee created with enabled login gets an ESS user who can log in without PIM menu",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P1",
+      "feature": "Create Login",
+      "requirementIds": [
+        "PIM-FR-007-AC2",
+        "PIM-FR-007-AC3",
+        "PIM-E2E-02"
+      ],
+      "roles": [
+        "Admin",
+        "ESS"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "testData": {
+        "username": "auto.emp<unique>",
+        "password": "<generated, policy compliant>"
+      },
+      "steps": [
+        {
+          "action": "Add employee with Create Login Details on, status Enabled, save",
+          "expected": "Toast \"Successfully Saved\""
+        },
+        {
+          "action": "Look up the username in Admin > User Management (users API, exact username)",
+          "expected": "User exists with role ESS, status Enabled and the employee name"
+        },
+        {
+          "action": "In a separate guest context, log in with the new credentials",
+          "expected": "Dashboard opens; side menu has no PIM, Admin or Maintenance"
+        }
+      ],
+      "expectedResult": "ESS account works end to end",
+      "tags": [
+        "@smoke",
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/create-login.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-029",
+      "title": "Employee created with a Disabled login cannot sign in and sees Account disabled",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P1",
+      "feature": "Create Login",
+      "requirementIds": [
+        "PIM-FR-007-AC3"
+      ],
+      "roles": [
+        "Admin",
+        "ESS"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "steps": [
+        {
+          "action": "Add employee with Create Login Details on and Status = Disabled",
+          "expected": "Saved"
+        },
+        {
+          "action": "In a guest context, log in with those credentials",
+          "expected": "Alert \"Account disabled\""
+        }
+      ],
+      "expectedResult": "Disabled status blocks login",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/create-login.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-030",
+      "title": "Username that already exists is rejected with Username already exists",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P1",
+      "feature": "Create Login",
+      "requirementIds": [
+        "PIM-FR-007-AC4",
+        "PIM-VAL-006"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "testData": {
+        "username": "Admin"
+      },
+      "steps": [
+        {
+          "action": "Enable login, enter username \"Admin\" and valid passwords",
+          "expected": "\"Username already exists\"; employee not saved"
+        }
+      ],
+      "expectedResult": "Usernames are unique",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/create-login.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-031",
+      "title": "Username length boundaries: 4 and 41 characters rejected, 5 and 40 accepted",
+      "layer": "UI",
+      "type": "Edge",
+      "priority": "P2",
+      "feature": "Create Login",
+      "requirementIds": [
+        "PIM-VAL-006"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "len": 4,
+            "message": "Should be at least 5 characters"
+          },
+          {
+            "len": 41,
+            "message": "Should not exceed 40 characters"
+          },
+          {
+            "len": 5,
+            "message": "none"
+          },
+          {
+            "len": 40,
+            "message": "none"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "action": "Type a username of the variant length",
+          "expected": "Variant message shown, or none for 5 and 40"
+        }
+      ],
+      "expectedResult": "Username length boundaries enforced",
+      "tags": [
+        "@edge"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/create-login.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-032",
+      "title": "Password policy violations and confirm mismatch show the specific messages",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P1",
+      "feature": "Create Login",
+      "requirementIds": [
+        "PIM-VAL-007",
+        "PIM-VAL-008",
+        "PIM-E2E-03"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "password": "ab1",
+            "message": "Should have at least 7 characters"
+          },
+          {
+            "password": "abcdefgh",
+            "message": "Your password must contain minimum 1 number"
+          },
+          {
+            "password": "ABCDEF12",
+            "message": "Your password must contain minimum 1 lower-case letter"
+          },
+          {
+            "password": "Valid123",
+            "confirm": "Valid124",
+            "message": "Passwords do not match"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "action": "Enable login, enter a valid username and the variant password (and confirm)",
+          "expected": "Variant message shown; employee not saved"
+        }
+      ],
+      "expectedResult": "Password policy enforced on create",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/create-login.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-033",
+      "title": "Login fields become mandatory only when Create Login Details is on",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Create Login",
+      "requirementIds": [
+        "PIM-VAL-006",
+        "PIM-VAL-007",
+        "PIM-VAL-008"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "steps": [
+        {
+          "action": "Turn the toggle on, leave Username, Password and Confirm Password blank, Save",
+          "expected": "\"Required\" under each of the three fields"
+        },
+        {
+          "action": "Turn the toggle off and Save with names filled",
+          "expected": "Employee saved without a user"
+        }
+      ],
+      "expectedResult": "Conditional mandatory rules are correct",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/create-login.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-034",
+      "title": "Personal details are saved with Successfully Updated and persist after reload",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P1",
+      "feature": "Personal Details",
+      "requirementIds": [
+        "PIM-FR-008-AC1",
+        "PIM-FR-008-AC2",
+        "PIM-FR-008-AC4",
+        "PIM-E2E-04"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "testData": {
+        "otherId": "<unique>",
+        "license": "DL<unique>",
+        "licenseExpiry": "+2 years",
+        "nationality": "Indian",
+        "maritalStatus": "Married",
+        "dob": "1990-15-06 (yyyy-dd-mm)",
+        "gender": "Female"
+      },
+      "steps": [
+        {
+          "action": "Open Personal Details",
+          "expected": "Fields show the API-created values"
+        },
+        {
+          "action": "Check Nationality, Marital Status and Gender controls",
+          "expected": "Nationalities list, Single/Married/Other, Male/Female radios"
+        },
+        {
+          "action": "Fill all test data and click Save",
+          "expected": "Toast \"Successfully Updated\""
+        },
+        {
+          "action": "Reload the page",
+          "expected": "All values are retained"
+        }
+      ],
+      "expectedResult": "Personal details persist",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/personal-details.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-035",
+      "title": "Renaming an employee updates the profile header and the Employee List",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Personal Details",
+      "requirementIds": [
+        "PIM-FR-008-AC5"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "testData": {
+        "newFirstName": "Renamed"
+      },
+      "steps": [
+        {
+          "action": "Change First Name and Save",
+          "expected": "\"Successfully Updated\"; header shows the new name (also after a reload)"
+        },
+        {
+          "action": "Search the list by Employee Id",
+          "expected": "Row shows the new first name"
+        }
+      ],
+      "expectedResult": "Name change propagates",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/personal-details.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-036",
+      "title": "Invalid date formats in Date of Birth and License Expiry Date are rejected",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Personal Details",
+      "requirementIds": [
+        "PIM-FR-008-AC3",
+        "PIM-VAL-010"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "field": "Date of Birth",
+            "value": "15/06/1990"
+          },
+          {
+            "field": "License Expiry Date",
+            "value": "2026-31-02"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "action": "Type the variant value into the date field and Save",
+          "expected": "\"Should be a valid date in yyyy-dd-mm format\"; not saved"
+        }
+      ],
+      "expectedResult": "Date format validated against Localization setting",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/personal-details.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-037",
+      "title": "Other Id and Driver License accept 30 characters, reject 31, and edited Employee Id stays unique",
+      "layer": "UI",
+      "type": "Edge",
+      "priority": "P3",
+      "feature": "Personal Details",
+      "requirementIds": [
+        "PIM-VAL-009",
+        "PIM-VAL-004"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)",
+        "A second employee exists"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "field": "Other Id",
+            "len": 31
+          },
+          {
+            "field": "Driver's License Number",
+            "len": 31
+          },
+          {
+            "field": "Employee Id",
+            "value": "<second employee id>",
+            "message": "Employee Id already exists"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "action": "Enter the variant value and Save",
+          "expected": "Length message \"Should not exceed 30 characters\" or \"Employee Id already exists\""
+        }
+      ],
+      "expectedResult": "Personal Details field limits enforced",
+      "tags": [
+        "@edge"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/personal-details.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-038",
+      "title": "Saving Personal Details does not change data on other profile tabs",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P1",
+      "feature": "Personal Details",
+      "requirementIds": [
+        "PIM-NFR-01"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "Employee created via API with contact details and job title set"
+      ],
+      "steps": [
+        {
+          "action": "Change Marital Status on Personal Details and Save",
+          "expected": "\"Successfully Updated\""
+        },
+        {
+          "action": "Open Contact Details and Job",
+          "expected": "Previously saved values unchanged"
+        }
+      ],
+      "expectedResult": "Tab saves are isolated",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/personal-details.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-039",
+      "title": "Contact details with a US address use the state drop-down and persist after save",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P1",
+      "feature": "Contact Details",
+      "requirementIds": [
+        "PIM-FR-011-AC1",
+        "PIM-FR-011-AC5",
+        "PIM-E2E-04"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "testData": {
+        "street1": "1 Main St",
+        "city": "Austin",
+        "country": "United States",
+        "state": "Texas",
+        "zip": "73301",
+        "mobile": "+1 (512) 555-0100",
+        "workEmail": "auto<unique>@example.com"
+      },
+      "steps": [
+        {
+          "action": "Select Country = United States",
+          "expected": "State/Province becomes a drop-down of states"
+        },
+        {
+          "action": "Fill test data and Save",
+          "expected": "Toast \"Successfully Updated\""
+        },
+        {
+          "action": "Reload",
+          "expected": "Values persist"
+        }
+      ],
+      "expectedResult": "Contact details saved",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/contact-details.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-040",
+      "title": "Telephone fields reject letters and symbols other than + - / ( )",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Contact Details",
+      "requirementIds": [
+        "PIM-FR-011-AC2",
+        "PIM-VAL-013"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "field": "Home",
+            "value": "12ab34"
+          },
+          {
+            "field": "Mobile",
+            "value": "555#123"
+          },
+          {
+            "field": "Work",
+            "value": "+1 (212) 555-01/22",
+            "valid": true
+          }
+        ]
+      },
+      "steps": [
+        {
+          "action": "Enter the variant value",
+          "expected": "\"Allows numbers and only + - / ( )\" for invalid, no message for the valid variant"
+        }
+      ],
+      "expectedResult": "Telephone character rule enforced",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/contact-details.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-041",
+      "title": "Invalid email formats are rejected with Expected format admin@example.com",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P1",
+      "feature": "Contact Details",
+      "requirementIds": [
+        "PIM-FR-011-AC3",
+        "PIM-VAL-014"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "testData": {
+        "variants": [
+          "plainaddress",
+          "a@b",
+          "a@@example.com",
+          "a b@example.com"
+        ]
+      },
+      "steps": [
+        {
+          "action": "Enter the variant in Work Email and Save",
+          "expected": "\"Expected format: admin@example.com\"; not saved"
+        }
+      ],
+      "expectedResult": "Email format validated",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/contact-details.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-042",
+      "title": "Work Email already used by another employee, or equal to Other Email, is rejected",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P1",
+      "feature": "Contact Details",
+      "requirementIds": [
+        "PIM-FR-011-AC4",
+        "PIM-VAL-014"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)",
+        "A second employee created via API with a known work email"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "workEmail": "<second employee email>"
+          },
+          {
+            "workEmail": "same<unique>@example.com",
+            "otherEmail": "same<unique>@example.com"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "action": "Enter the variant emails and Save",
+          "expected": "\"Already exists\" (or the duplicate message) under the email field; not saved"
+        }
+      ],
+      "expectedResult": "Email uniqueness enforced",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/contact-details.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-043",
+      "title": "Contact field length limits: address 70, zip 10, phone 25, email 50",
+      "layer": "UI",
+      "type": "Edge",
+      "priority": "P3",
+      "feature": "Contact Details",
+      "requirementIds": [
+        "PIM-VAL-011",
+        "PIM-VAL-012",
+        "PIM-VAL-013",
+        "PIM-VAL-014"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "field": "Street 1",
+            "len": 71
+          },
+          {
+            "field": "City",
+            "len": 71
+          },
+          {
+            "field": "Zip/Postal Code",
+            "len": 11
+          },
+          {
+            "field": "Mobile",
+            "len": 26
+          },
+          {
+            "field": "Work Email",
+            "len": 51
+          }
+        ]
+      },
+      "steps": [
+        {
+          "action": "Enter max+1 characters in the variant field",
+          "expected": "\"Should not exceed N characters\""
+        },
+        {
+          "action": "Reduce to the max length",
+          "expected": "Message disappears"
+        }
+      ],
+      "expectedResult": "Length boundaries enforced",
+      "tags": [
+        "@edge"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/contact-details.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-044",
+      "title": "Emergency contact can be added, edited and deleted",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P1",
+      "feature": "Emergency Contacts",
+      "requirementIds": [
+        "PIM-FR-012-AC2",
+        "PIM-FR-012-AC3",
+        "PIM-E2E-04"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "testData": {
+        "name": "Jane Doe",
+        "relationship": "Sister",
+        "mobile": "0771234567"
+      },
+      "steps": [
+        {
+          "action": "Click + Add, fill test data, Save",
+          "expected": "\"Successfully Saved\"; row in Assigned Emergency Contacts with all columns"
+        },
+        {
+          "action": "Edit the row",
+          "expected": "Form is pre-filled; change Relationship and Save shows \"Successfully Updated\""
+        },
+        {
+          "action": "Delete the row and confirm",
+          "expected": "\"Successfully Deleted\"; row removed"
+        }
+      ],
+      "expectedResult": "Emergency contact CRUD works",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/emergency-contacts.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-045",
+      "title": "Emergency contact requires Name, Relationship and at least one telephone",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P1",
+      "feature": "Emergency Contacts",
+      "requirementIds": [
+        "PIM-FR-012-AC1",
+        "PIM-VAL-015",
+        "PIM-VAL-016"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "steps": [
+        {
+          "action": "Click + Add and Save empty form",
+          "expected": "\"Required\" under Name and Relationship and \"At least one phone number is required\""
+        },
+        {
+          "action": "Fill Name and Relationship only and Save",
+          "expected": "Phone message remains; not saved"
+        }
+      ],
+      "expectedResult": "Mandatory rules enforced",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/emergency-contacts.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-046",
+      "title": "Multiple emergency contacts can be bulk-deleted",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P3",
+      "feature": "Emergency Contacts",
+      "requirementIds": [
+        "PIM-FR-012-AC3"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "Employee with two emergency contacts created via API"
+      ],
+      "steps": [
+        {
+          "action": "Select both rows and click Delete Selected, confirm",
+          "expected": "\"Successfully Deleted\"; table empty"
+        }
+      ],
+      "expectedResult": "Bulk delete works",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/emergency-contacts.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-047",
+      "title": "Emergency contact Name and Relationship reject 101 characters",
+      "layer": "UI",
+      "type": "Edge",
+      "priority": "P3",
+      "feature": "Emergency Contacts",
+      "requirementIds": [
+        "PIM-VAL-015"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "steps": [
+        {
+          "action": "Enter 101 characters in Name and in Relationship",
+          "expected": "\"Should not exceed 100 characters\" under each"
+        }
+      ],
+      "expectedResult": "Length boundary enforced",
+      "tags": [
+        "@edge"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/emergency-contacts.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-048",
+      "title": "Dependent with Relationship Other requires Please Specify and can be edited and deleted",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Dependents",
+      "requirementIds": [
+        "PIM-FR-013-AC1",
+        "PIM-FR-013-AC2",
+        "PIM-FR-013-AC3",
+        "PIM-VAL-017"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "testData": {
+        "name": "Kid One",
+        "relationship": "Other",
+        "specify": "Nephew",
+        "dob": "2015-10-03"
+      },
+      "steps": [
+        {
+          "action": "Click + Add, choose Relationship = Other",
+          "expected": "\"Please Specify\" field appears"
+        },
+        {
+          "action": "Save without Please Specify",
+          "expected": "\"Required\" under Please Specify"
+        },
+        {
+          "action": "Fill it and Save",
+          "expected": "\"Successfully Saved\"; row lists Name, Relationship, Date of Birth"
+        },
+        {
+          "action": "Edit then delete the row",
+          "expected": "Updated, then removed after confirmation"
+        }
+      ],
+      "expectedResult": "Dependents CRUD and conditional field work",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/dependents.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-049",
+      "title": "Dependent Name and Relationship are mandatory",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Dependents",
+      "requirementIds": [
+        "PIM-VAL-017"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "steps": [
+        {
+          "action": "Click + Add and Save empty form",
+          "expected": "\"Required\" under Name and Relationship"
+        }
+      ],
+      "expectedResult": "Mandatory fields enforced",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/dependents.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-050",
+      "title": "Passport record is added with default document type and listed with its details",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Immigration",
+      "requirementIds": [
+        "PIM-FR-014-AC1",
+        "PIM-FR-014-AC2",
+        "PIM-FR-014-AC4"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "testData": {
+        "number": "P<unique>",
+        "issuedDate": "today-1y",
+        "expiryDate": "today+9y",
+        "issuedBy": "India"
+      },
+      "steps": [
+        {
+          "action": "Click + Add",
+          "expected": "Document radio defaults to Passport; Issued By lists countries"
+        },
+        {
+          "action": "Fill data and Save",
+          "expected": "\"Successfully Saved\"; row shows Document, Number, Issued By, Issued Date, Expiry Date"
+        },
+        {
+          "action": "Edit the Number then delete the row",
+          "expected": "Updated, then removed"
+        }
+      ],
+      "expectedResult": "Immigration CRUD works",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/immigration.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-051",
+      "title": "Immigration record rejects missing Number and Expiry Date before Issued Date",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Immigration",
+      "requirementIds": [
+        "PIM-FR-014-AC3",
+        "PIM-VAL-018",
+        "PIM-VAL-019"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "steps": [
+        {
+          "action": "Save with Number empty",
+          "expected": "\"Required\" under Number"
+        },
+        {
+          "action": "Enter Number, Issued Date 2025-01-01, Expiry Date 2024-01-01, Save",
+          "expected": "\"Expiry date should be after issued date\""
+        }
+      ],
+      "expectedResult": "Immigration validations enforced",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/immigration.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-052",
+      "title": "Job details saved from master data appear in the Employee List row",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P1",
+      "feature": "Job Details",
+      "requirementIds": [
+        "PIM-FR-015-AC1",
+        "PIM-FR-015-AC3",
+        "PIM-E2E-04"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "testData": {
+        "jobTitle": "<existing>",
+        "employmentStatus": "<existing>",
+        "subUnit": "<existing>",
+        "location": "<existing>",
+        "joinedDate": "today"
+      },
+      "steps": [
+        {
+          "action": "Open Job tab; open each drop-down",
+          "expected": "Options come from Admin master data"
+        },
+        {
+          "action": "Select values, Save",
+          "expected": "\"Successfully Updated\""
+        },
+        {
+          "action": "Search list by Employee Id",
+          "expected": "Row shows the Job Title, Employment Status and Sub Unit"
+        }
+      ],
+      "expectedResult": "Job data persists and propagates",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/job-details.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-053",
+      "title": "Job Title with a specification shows the specification file as a download link",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P3",
+      "feature": "Job Details",
+      "requirementIds": [
+        "PIM-FR-015-AC2"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)",
+        "A Job Title with an attached specification exists (created in Admin as test data)"
+      ],
+      "steps": [
+        {
+          "action": "Select that Job Title on the Job tab",
+          "expected": "Job Specification file name shown as a link"
+        },
+        {
+          "action": "Click the link",
+          "expected": "File downloads"
+        }
+      ],
+      "expectedResult": "Job specification is exposed",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/job-details.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-054",
+      "title": "Employment contract end date before start date is rejected",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Job Details",
+      "requirementIds": [
+        "PIM-FR-016-AC1",
+        "PIM-VAL-020"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "steps": [
+        {
+          "action": "Turn on Include Employment Contract Details, set Start 2025-10-10 and End 2025-01-01, Save",
+          "expected": "\"End date should be after Start date\" under Contract End Date; nothing saved"
+        }
+      ],
+      "expectedResult": "Contract dates validated",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/job-details.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-055",
+      "title": "Contract file within 1 MB is saved and can be replaced or deleted; larger files are rejected",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P3",
+      "feature": "Job Details",
+      "requirementIds": [
+        "PIM-FR-016-AC2",
+        "PIM-BR-11"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "file": "contract.pdf (<1 MB)"
+          },
+          {
+            "file": "large.pdf (>1 MB)",
+            "message": "Attachment Size Exceeded"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "action": "Upload the variant file with valid contract dates and Save",
+          "expected": "Saved for the small file; size message for the large one"
+        },
+        {
+          "action": "For the saved file, edit and choose Replace, then Delete Current",
+          "expected": "File replaced, then removed"
+        }
+      ],
+      "expectedResult": "Contract file lifecycle and limit work",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/job-details.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-056",
+      "title": "Terminate Employment records the termination and Activate Employment reverses it",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P1",
+      "feature": "Termination",
+      "requirementIds": [
+        "PIM-FR-017-AC1",
+        "PIM-FR-017-AC2",
+        "PIM-FR-018-AC1"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "testData": {
+        "terminationDate": "today",
+        "reason": "Resigned",
+        "note": "auto"
+      },
+      "steps": [
+        {
+          "action": "On Job tab click Terminate Employment",
+          "expected": "Dialog with Termination Date*, Termination Reason*, Note"
+        },
+        {
+          "action": "Fill and Save",
+          "expected": "\"Successfully Updated\"; \"Terminated on: <date>\" shown; button reads \"Activate Employment\""
+        },
+        {
+          "action": "Click Activate Employment",
+          "expected": "\"Successfully Updated\"; termination text gone"
+        }
+      ],
+      "expectedResult": "Termination lifecycle works",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/termination.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-057",
+      "title": "Terminated employee is labelled Past Employee in lists and autocompletes",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Termination",
+      "requirementIds": [
+        "PIM-FR-017-AC4",
+        "PIM-BR-05"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "Employee created and terminated via API"
+      ],
+      "steps": [
+        {
+          "action": "Set Include = Current and Past Employees and type the employee name in the Employee Name autocomplete",
+          "expected": "Suggestion shows \"(Past Employee)\" (with the default Include = Current Employees Only the past employee is not offered)"
+        },
+        {
+          "action": "Search with Include = Past Employees Only",
+          "expected": "Row is listed with \"(Past Employee)\" after the last name; data retained on profile"
+        }
+      ],
+      "expectedResult": "Past employees are labelled and data kept",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/termination.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-058",
+      "title": "Terminate dialog requires Termination Date and Reason",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Termination",
+      "requirementIds": [
+        "PIM-VAL-021"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "steps": [
+        {
+          "action": "Open Terminate Employment, clear the date and Save",
+          "expected": "\"Required\" under Termination Date and Termination Reason"
+        }
+      ],
+      "expectedResult": "Mandatory termination fields enforced",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/termination.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-059",
+      "title": "Salary component without pay grade is saved and listed in Assigned Salary Components",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P1",
+      "feature": "Salary",
+      "requirementIds": [
+        "PIM-FR-019-AC3",
+        "PIM-FR-019-AC4",
+        "PIM-E2E-04"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "testData": {
+        "component": "Base<unique>",
+        "payFrequency": "Monthly",
+        "currency": "United States Dollar",
+        "amount": "3000"
+      },
+      "steps": [
+        {
+          "action": "Click + Add; open Pay Frequency",
+          "expected": "Options: Bi Weekly, Hourly, Monthly, Monthly on first pay of month. (trailing period as shown by the app), Semi Monthly, Weekly"
+        },
+        {
+          "action": "Fill data and Save",
+          "expected": "\"Successfully Saved\"; row shows component, amount, currency, frequency, direct deposit amount"
+        },
+        {
+          "action": "Edit the amount and then delete the row",
+          "expected": "Updated, then removed"
+        }
+      ],
+      "expectedResult": "Salary component CRUD works",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/salary.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-060",
+      "title": "Amount outside the pay grade range is rejected and a value inside it is accepted",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P1",
+      "feature": "Salary",
+      "requirementIds": [
+        "PIM-FR-019-AC1",
+        "PIM-FR-019-AC2",
+        "PIM-BR-09",
+        "PIM-VAL-023",
+        "PIM-E2E-12"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)",
+        "Pay Grade with USD 1000-5000 created in Admin as test data (deleted in teardown)"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "amount": "999",
+            "ok": false
+          },
+          {
+            "amount": "5001",
+            "ok": false
+          },
+          {
+            "amount": "1000",
+            "ok": true
+          },
+          {
+            "amount": "5000",
+            "ok": true
+          }
+        ]
+      },
+      "steps": [
+        {
+          "action": "Select the pay grade (automation uses the seed grade \"Grade 1\", USD 50000-60000: amounts 49999 / 60001 / 50000 / 60000)",
+          "expected": "Currency lists only USD; hint \"Min: 50000 - Max: 60000\" displayed"
+        },
+        {
+          "action": "Enter the variant amount and Save",
+          "expected": "\"Should be within Min/Max values\" for out-of-range, saved for boundaries"
+        }
+      ],
+      "expectedResult": "Pay grade range enforced at boundaries",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/salary.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-061",
+      "title": "Salary component requires component name, currency and a numeric amount",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Salary",
+      "requirementIds": [
+        "PIM-VAL-022",
+        "PIM-VAL-023",
+        "PIM-VAL-024"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "steps": [
+        {
+          "action": "Click + Add, Save empty",
+          "expected": "\"Required\" under Salary Component, Currency and Amount"
+        },
+        {
+          "action": "Enter Amount \"abc\"",
+          "expected": "\"Should be a number\""
+        },
+        {
+          "action": "Enter 101 characters in Salary Component",
+          "expected": "\"Should not exceed 100 characters\""
+        }
+      ],
+      "expectedResult": "Salary field validations enforced",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/salary.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-062",
+      "title": "Direct deposit fields become mandatory and numeric when the toggle is on",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P3",
+      "feature": "Salary",
+      "requirementIds": [
+        "PIM-FR-020-AC1",
+        "PIM-FR-020-AC2",
+        "PIM-VAL-025"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "steps": [
+        {
+          "action": "In Add Salary Component, turn on Include Direct Deposit Details, Save with deposit fields empty",
+          "expected": "\"Required\" under Account Number, Account Type, Routing Number, Amount"
+        },
+        {
+          "action": "Enter letters in Routing Number and Amount",
+          "expected": "\"Should be a number\""
+        },
+        {
+          "action": "Fill valid deposit data and Save",
+          "expected": "Saved; Direct Deposit Amount column shows the amount"
+        }
+      ],
+      "expectedResult": "Direct deposit validations enforced",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/salary.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-063",
+      "title": "Assigning a supervisor shows the relation on both employees and in the Supervisor column",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P1",
+      "feature": "Report-to",
+      "requirementIds": [
+        "PIM-FR-021-AC1",
+        "PIM-FR-021-AC4",
+        "PIM-FR-021-AC5"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "Two employees created via API (supervisor and subordinate)"
+      ],
+      "steps": [
+        {
+          "action": "On the subordinate Report-to tab, click + Add in Assigned Supervisors",
+          "expected": "Name* autocomplete and Reporting Method* (Direct, Indirect, ...)"
+        },
+        {
+          "action": "Pick the supervisor, method Direct, Save",
+          "expected": "\"Successfully Saved\"; listed under Assigned Supervisors"
+        },
+        {
+          "action": "Open the supervisor's Report-to tab",
+          "expected": "Subordinate listed under Assigned Subordinates"
+        },
+        {
+          "action": "Search list by the subordinate Employee Id",
+          "expected": "Supervisor column shows the supervisor's name"
+        }
+      ],
+      "expectedResult": "Report-to relation is bidirectional",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/report-to.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-064",
+      "title": "An employee cannot be assigned as their own supervisor or subordinate",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P1",
+      "feature": "Report-to",
+      "requirementIds": [
+        "PIM-FR-021-AC2",
+        "PIM-BR-08"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "steps": [
+        {
+          "action": "On the employee Report-to tab, add supervisor and type the same employee name",
+          "expected": "The employee is not offered, or saving shows \"Invalid\""
+        },
+        {
+          "action": "Repeat in Assigned Subordinates",
+          "expected": "Same result"
+        }
+      ],
+      "expectedResult": "Self-reporting prevented",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/report-to.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-065",
+      "title": "The same supervisor cannot be assigned twice to one employee",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Report-to",
+      "requirementIds": [
+        "PIM-FR-021-AC3"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "Supervisor relation created via API"
+      ],
+      "steps": [
+        {
+          "action": "Add the same supervisor again with any method",
+          "expected": "Supervisor not offered, or saving is rejected; only one row exists"
+        }
+      ],
+      "expectedResult": "Duplicate relations prevented",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/report-to.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-066",
+      "title": "Report-to requires an employee picked from autocomplete and a reporting method",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Report-to",
+      "requirementIds": [
+        "PIM-VAL-026",
+        "PIM-VAL-027"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "steps": [
+        {
+          "action": "Type free text in Name without selecting a suggestion, leave method empty, Save",
+          "expected": "\"Invalid\" under Name, \"Required\" under Reporting Method"
+        }
+      ],
+      "expectedResult": "Report-to validations enforced",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/report-to.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-067",
+      "title": "Supervisor sees only subordinates in PIM, and loses visibility when the relation is removed",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P1",
+      "feature": "Report-to",
+      "requirementIds": [
+        "PIM-FR-001-AC5",
+        "PIM-BR-07",
+        "PIM-E2E-05"
+      ],
+      "roles": [
+        "Admin",
+        "Supervisor"
+      ],
+      "preconditions": [
+        "Supervisor employee with ESS login and a subordinate created via API, relation Direct"
+      ],
+      "steps": [
+        {
+          "action": "Log in as the supervisor in a guest context and open PIM",
+          "expected": "Employee List shows only the subordinate"
+        },
+        {
+          "action": "As Admin, delete the Report-to relation via API; supervisor reloads PIM",
+          "expected": "Subordinate no longer listed (No Records Found or PIM menu absent)"
+        }
+      ],
+      "expectedResult": "Visibility follows Report-to",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/report-to.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-068",
+      "title": "Work experience is added with mandatory fields and To date must be after From date",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Qualifications",
+      "requirementIds": [
+        "PIM-FR-022-AC1",
+        "PIM-FR-022-AC6",
+        "PIM-VAL-028"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "steps": [
+        {
+          "action": "Add Work Experience with empty form",
+          "expected": "\"Required\" under Company and Job Title"
+        },
+        {
+          "action": "Fill Company, Job Title, From 2024-01-01, To 2023-01-01, Save",
+          "expected": "\"To date should be after from date\" under To (app wording; the BRD capitalises \"From\")"
+        },
+        {
+          "action": "Fix To date, Save; then edit and delete the row",
+          "expected": "Saved, updated, deleted"
+        }
+      ],
+      "expectedResult": "Work experience CRUD and validation work",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/qualifications.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-069",
+      "title": "Education and License records are added from master data with optional fields",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P3",
+      "feature": "Qualifications",
+      "requirementIds": [
+        "PIM-FR-022-AC2",
+        "PIM-FR-022-AC5",
+        "PIM-FR-022-AC6"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "testData": {
+        "education": {
+          "level": "<existing>",
+          "institute": "MIT",
+          "year": "2015",
+          "gpa": "3.8"
+        },
+        "license": {
+          "type": "<existing>",
+          "number": "L<unique>"
+        }
+      },
+      "steps": [
+        {
+          "action": "Add Education with only Level, Save",
+          "expected": "Saved; listed"
+        },
+        {
+          "action": "Add License with type and number, Save",
+          "expected": "Saved; listed"
+        }
+      ],
+      "expectedResult": "Education and License work with minimal data",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/qualifications.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-070",
+      "title": "A skill cannot be added twice and Years of Experience must be numeric",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Qualifications",
+      "requirementIds": [
+        "PIM-FR-022-AC3",
+        "PIM-VAL-029"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "steps": [
+        {
+          "action": "Add a Skill with Years \"abc\"",
+          "expected": "\"Should be a number\""
+        },
+        {
+          "action": "Add the Skill with Years 5, Save",
+          "expected": "Saved"
+        },
+        {
+          "action": "Add the same Skill again",
+          "expected": "Skill not offered or rejected as already added"
+        }
+      ],
+      "expectedResult": "Skill rules enforced",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/qualifications.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-071",
+      "title": "Language requires Language, Fluency and Competency",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Qualifications",
+      "requirementIds": [
+        "PIM-FR-022-AC4",
+        "PIM-VAL-030"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "steps": [
+        {
+          "action": "Add Language and Save empty",
+          "expected": "\"Required\" under Language, Fluency, Competency"
+        },
+        {
+          "action": "Fill Language, Fluency = Speaking, Competency = Good, Save",
+          "expected": "Saved and listed"
+        }
+      ],
+      "expectedResult": "Language validations enforced",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/qualifications.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-072",
+      "title": "Membership is saved with subscription details and renewal date must follow commence date",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P3",
+      "feature": "Memberships",
+      "requirementIds": [
+        "PIM-FR-023-AC1",
+        "PIM-FR-023-AC2",
+        "PIM-FR-023-AC3"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "testData": {
+        "membership": "<existing>",
+        "paidBy": "Company",
+        "amount": "100",
+        "currency": "United States Dollar"
+      },
+      "steps": [
+        {
+          "action": "Add Membership with Commence 2025-01-01 and Renewal 2024-01-01, Save",
+          "expected": "Renewal date validation message"
+        },
+        {
+          "action": "Fix Renewal to 2026-01-01, Save",
+          "expected": "Saved; row shows Membership, Paid By, Amount, Currency, Commence, Renewal"
+        }
+      ],
+      "expectedResult": "Membership CRUD and date rule work",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/memberships.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-073",
+      "title": "Attachment is uploaded with comment, listed with metadata, downloaded identical and deleted",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Attachments",
+      "requirementIds": [
+        "PIM-FR-010-AC1",
+        "PIM-FR-010-AC2",
+        "PIM-FR-010-AC4",
+        "PIM-E2E-08"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "testData": {
+        "file": "test-data/files/attachment-small.txt",
+        "comment": "auto attachment"
+      },
+      "steps": [
+        {
+          "action": "On Personal Details click + Add in Attachments",
+          "expected": "Select File*, Browse, \"No file selected\", hint \"Accepts up to 1MB\" and Comment"
+        },
+        {
+          "action": "Upload file with comment, Save",
+          "expected": "\"Successfully Saved\"; row shows File Name, Description, Size, Type, Date Added, Added By"
+        },
+        {
+          "action": "Download it",
+          "expected": "Downloaded content equals the uploaded file"
+        },
+        {
+          "action": "Delete it and confirm",
+          "expected": "Row removed"
+        }
+      ],
+      "expectedResult": "Attachment lifecycle works",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/attachments.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-074",
+      "title": "Attachment over 1 MB, missing file or comment over 200 characters is rejected",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Attachments",
+      "requirementIds": [
+        "PIM-FR-010-AC3",
+        "PIM-VAL-031",
+        "PIM-VAL-032",
+        "PIM-BR-11"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "file": "none",
+            "message": "Required"
+          },
+          {
+            "file": "test-data/files/attachment-large.bin (>1 MB)",
+            "message": "Attachment Size Exceeded"
+          },
+          {
+            "file": "test-data/files/attachment-small.txt",
+            "comment": "<201 chars>",
+            "message": "Should not exceed 200 characters"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "action": "Click + Add, apply the variant and Save",
+          "expected": "Variant message shown (\"Attachment Size Exceeded\" already when the file is chosen); nothing saved"
+        }
+      ],
+      "expectedResult": "Attachment validations enforced",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/attachments.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-075",
+      "title": "Multiple attachments can be bulk-deleted",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P3",
+      "feature": "Attachments",
+      "requirementIds": [
+        "PIM-FR-010-AC5"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "Employee with two attachments uploaded"
+      ],
+      "steps": [
+        {
+          "action": "Select both rows, Delete Selected, confirm",
+          "expected": "\"Successfully Deleted\"; table empty"
+        }
+      ],
+      "expectedResult": "Bulk delete works",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/attachments.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-076",
+      "title": "Drop Down custom field for Personal Details appears on profile, saves a value and disappears when deleted",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Custom Fields",
+      "requirementIds": [
+        "PIM-FR-025-AC1",
+        "PIM-FR-025-AC2",
+        "PIM-FR-009-AC1",
+        "PIM-FR-009-AC2",
+        "PIM-FR-009-AC3",
+        "PIM-E2E-09"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)",
+        "Fewer than 10 custom fields exist"
+      ],
+      "testData": {
+        "fieldName": "AutoCF<unique>",
+        "screen": "Personal Details",
+        "type": "Drop Down",
+        "options": "Red,Green,Blue"
+      },
+      "steps": [
+        {
+          "action": "PIM > Configuration > Custom Fields > + Add; open Screen and Type",
+          "expected": "The 10 screens of PIM-FR-025-AC1 and both types (Text or Number, Drop Down) are offered (the app additionally offers Tax Exemptions)"
+        },
+        {
+          "action": "Create the Drop Down field",
+          "expected": "\"Successfully Saved\"; listed as Personal Details / Drop Down and the remaining count drops by 1"
+        },
+        {
+          "action": "Open the employee Personal Details",
+          "expected": "\"Custom Fields\" section shows the select with Red, Green, Blue"
+        },
+        {
+          "action": "Choose Green, Save the section, reload",
+          "expected": "\"Successfully Updated\"; Green retained"
+        },
+        {
+          "action": "Try to delete the custom field definition while the value is stored; clear the value, reload the list, delete it, reopen the profile",
+          "expected": "Error toast \"Custom field(s) in use\" while a value is stored; after clearing: \"Successfully Deleted\" and the field is gone from the profile"
+        }
+      ],
+      "expectedResult": "Custom field lifecycle works",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/custom-fields.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-077",
+      "title": "Custom field requires a unique name and options for Drop Down type",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Custom Fields",
+      "requirementIds": [
+        "PIM-FR-025-AC4",
+        "PIM-VAL-033",
+        "PIM-VAL-034"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "A custom field created as test data (deleted in teardown)"
+      ],
+      "steps": [
+        {
+          "action": "+ Add, Save empty",
+          "expected": "\"Required\" under Field Name, Screen and Type"
+        },
+        {
+          "action": "Choose Type Drop Down and leave Select Options empty, Save",
+          "expected": "\"Required\" under Select Options"
+        },
+        {
+          "action": "Use the existing field name (exact case) with options, Save",
+          "expected": "\"Already exists\" under Field Name; nothing is saved"
+        }
+      ],
+      "expectedResult": "Custom field validations enforced",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/custom-fields.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-078",
+      "title": "Custom fields are capped at 10 and the Add button is disabled at the limit",
+      "layer": "UI",
+      "type": "Edge",
+      "priority": "P3",
+      "feature": "Custom Fields",
+      "requirementIds": [
+        "PIM-FR-025-AC3"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "steps": [
+        {
+          "action": "Create custom fields until 10 exist",
+          "expected": "Remaining count reaches 0 and + Add is disabled"
+        }
+      ],
+      "expectedResult": "Limit enforced",
+      "tags": [
+        "@edge"
+      ],
+      "automation": {
+        "status": "Manual",
+        "reason": "Requires filling all 10 global custom-field slots on the shared demo, which breaks other users; run on a dedicated instance"
+      }
+    },
+    {
+      "id": "PIM-UI-079",
+      "title": "Toggling deprecated and SSN/SIN optional fields shows and hides them without losing data",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Optional Fields",
+      "requirementIds": [
+        "PIM-FR-024-AC1",
+        "PIM-FR-024-AC2",
+        "PIM-FR-008-AC6",
+        "PIM-BR-12",
+        "PIM-NFR-02"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)",
+        "Original optional-field settings captured via API and restored in teardown"
+      ],
+      "steps": [
+        {
+          "action": "Turn on Show Nick Name/Smoker/Military Service and Show SSN/SIN, Save",
+          "expected": "\"Successfully Saved\""
+        },
+        {
+          "action": "Open Personal Details",
+          "expected": "Nickname, Smoker, Military Service, SSN Number, SIN Number visible; enter values and Save: \"Successfully Updated\""
+        },
+        {
+          "action": "Turn the toggles off and on again",
+          "expected": "Fields hidden, then visible again with the saved values"
+        }
+      ],
+      "expectedResult": "Optional fields control visibility only",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/optional-fields.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-080",
+      "title": "Enabling US Tax Exemptions adds a Tax Exemptions tab to the profile",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P3",
+      "feature": "Optional Fields",
+      "requirementIds": [
+        "PIM-FR-024-AC3"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)",
+        "Original setting restored in teardown"
+      ],
+      "steps": [
+        {
+          "action": "Log in as Admin while the switch is off; turn on \"Show US Tax Exemptions menu\", Save",
+          "expected": "\"Successfully Saved\""
+        },
+        {
+          "action": "Open the employee profile in that session and in a session logged in after the change",
+          "expected": "Tax Exemptions tab present"
+        }
+      ],
+      "expectedResult": "Tax Exemptions tab toggled",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/optional-fields.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-081",
+      "title": "CSV import creates valid rows, reports the imported count and skips invalid rows",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Data Import",
+      "requirementIds": [
+        "PIM-FR-026-AC1",
+        "PIM-FR-026-AC3",
+        "PIM-FR-026-AC4",
+        "PIM-E2E-10"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "Imported employees deleted via API in teardown"
+      ],
+      "testData": {
+        "file": "generated CSV from the downloaded sample: 3 valid rows with unique names, 1 row without last_name"
+      },
+      "steps": [
+        {
+          "action": "Open Data Import",
+          "expected": "Sample CSV \"Download\" link (importData.csv, header only) and the import rules are listed"
+        },
+        {
+          "action": "Upload the CSV",
+          "expected": "Dialog \"Import Details\": \"3 Records Successfully Imported\", \"1 Record Failed to Import\", Failed Rows 5 (file line incl. header)"
+        },
+        {
+          "action": "Search the list for the imported last names",
+          "expected": "Three employees found"
+        }
+      ],
+      "expectedResult": "Import is partial-safe",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/data-import.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-082",
+      "title": "Data Import rejects non-CSV files and CSV files over 1 MB",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Data Import",
+      "requirementIds": [
+        "PIM-FR-026-AC2",
+        "PIM-VAL-035"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "file": "employees.xlsx (generated at runtime)",
+            "message": "File type not allowed"
+          },
+          {
+            "file": "large.csv (>1 MB, generated at runtime)",
+            "message": "Attachment Size Exceeded"
+          },
+          {
+            "file": "none",
+            "message": "Required"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "action": "Upload the variant file and click Upload",
+          "expected": "Variant message (\"File type not allowed\" after Upload, \"Attachment Size Exceeded\" already when the file is chosen); no import request, nothing imported"
+        }
+      ],
+      "expectedResult": "Import file rules enforced",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/data-import.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-083",
+      "title": "New reporting method is saved, offered on Report-to, then edited and deleted",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Configuration Lists",
+      "requirementIds": [
+        "PIM-FR-027-AC1",
+        "PIM-FR-027-AC2"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "testData": {
+        "name": "AutoRM<unique>"
+      },
+      "steps": [
+        {
+          "action": "Configuration > Reporting Methods > + Add, Save name",
+          "expected": "\"Successfully Saved\"; listed"
+        },
+        {
+          "action": "Open Report-to > Add Supervisor > Reporting Method",
+          "expected": "New method offered"
+        },
+        {
+          "action": "Edit the name, then delete it",
+          "expected": "Updated, then deleted"
+        }
+      ],
+      "expectedResult": "Reporting method lifecycle works",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/configuration-lists.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-084",
+      "title": "New termination reason is saved, offered in Terminate Employment, then edited and deleted",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Configuration Lists",
+      "requirementIds": [
+        "PIM-FR-028-AC1",
+        "PIM-FR-028-AC2"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "An employee created via API for this test (deleted in teardown)"
+      ],
+      "testData": {
+        "name": "AutoTR<unique>"
+      },
+      "steps": [
+        {
+          "action": "Configuration > Termination Reasons > + Add, Save",
+          "expected": "\"Successfully Saved\"; listed"
+        },
+        {
+          "action": "Open Terminate Employment for the employee",
+          "expected": "New reason offered"
+        },
+        {
+          "action": "Edit then delete the reason",
+          "expected": "Updated, then deleted"
+        }
+      ],
+      "expectedResult": "Termination reason lifecycle works",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/configuration-lists.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-085",
+      "title": "Reporting Methods and Termination Reasons reject blank, duplicate and over-long names and block deleting in-use entries",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Configuration Lists",
+      "requirementIds": [
+        "PIM-FR-027-AC1",
+        "PIM-FR-027-AC3",
+        "PIM-FR-028-AC1",
+        "PIM-FR-028-AC3",
+        "PIM-VAL-036"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "One reporting method used in a Report-to relation and one termination reason used in a termination, both created via API"
+      ],
+      "testData": {
+        "screens": [
+          "Reporting Methods",
+          "Termination Reasons"
+        ],
+        "variants": [
+          {
+            "name": "",
+            "message": "Required"
+          },
+          {
+            "name": "<existing entry created by the test>",
+            "message": "Already exists"
+          },
+          {
+            "name": "<101 chars>",
+            "message": "Should not exceed 100 characters"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "action": "On each screen, + Add with the variant name and Save",
+          "expected": "Variant message; not saved"
+        },
+        {
+          "action": "On each screen, try to delete the in-use entry",
+          "expected": "Deletion is refused with an error toast (\"Reporting Method(s) in Use\" / \"Termination Reason(s) in Use\"), no confirmation dialog; entry remains"
+        }
+      ],
+      "expectedResult": "Both lookup lists enforce the same rules",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/configuration-lists.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-086",
+      "title": "Reports list shows predefined reports and filters by Report Name",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Reports",
+      "requirementIds": [
+        "PIM-FR-029-AC1",
+        "PIM-FR-029-AC2",
+        "PIM-FR-029-AC3"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "steps": [
+        {
+          "action": "Open PIM > Reports",
+          "expected": "Name and Actions columns, record count; \"Employee Contact info report\", \"Employee Job Details\", \"PIM Sample Report\", \"All Employee Sub Unit Hierarchy Report\" listed"
+        },
+        {
+          "action": "Type \"PIM Sample\" in Report Name, pick the suggestion, Search",
+          "expected": "Only PIM Sample Report"
+        },
+        {
+          "action": "Reset",
+          "expected": "Full list restored"
+        }
+      ],
+      "expectedResult": "Report list and search work",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/reports.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-087",
+      "title": "Custom report filtered by Job Title shows only chosen columns and matching employees, then is edited and deleted",
+      "layer": "UI",
+      "type": "Positive",
+      "priority": "P1",
+      "feature": "Reports",
+      "requirementIds": [
+        "PIM-FR-030-AC1",
+        "PIM-FR-030-AC2",
+        "PIM-FR-030-AC4",
+        "PIM-FR-030-AC6",
+        "PIM-E2E-11"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin",
+        "Employee with a unique Job Title created as test data"
+      ],
+      "testData": {
+        "reportName": "AutoRpt<unique>",
+        "criteria": {
+          "jobTitle": "<test job title>"
+        },
+        "displayFields": {
+          "Personal": [
+            "Employee Id",
+            "Employee Last Name"
+          ],
+          "Job": [
+            "Job Title"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "action": "+ Add; open Selection Criteria and Display Field Groups",
+          "expected": "All criteria and field groups listed by the BRD are offered"
+        },
+        {
+          "action": "Define the report with Include Header on and Save",
+          "expected": "Report runs; table has exactly the chosen columns and only the test employee"
+        },
+        {
+          "action": "Edit the report",
+          "expected": "Definition pre-filled"
+        },
+        {
+          "action": "Delete it from the list and confirm",
+          "expected": "Removed"
+        }
+      ],
+      "expectedResult": "Report definition and output are correct",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/reports.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-088",
+      "title": "Report requires a unique name and at least one display field",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Reports",
+      "requirementIds": [
+        "PIM-FR-030-AC3",
+        "PIM-FR-030-AC5",
+        "PIM-VAL-037"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "name": "",
+            "message": "Required"
+          },
+          {
+            "name": "PIM Sample Report",
+            "message": "Already exists"
+          },
+          {
+            "name": "AutoRpt<unique>",
+            "displayFields": "none",
+            "message": "Warning toast \"At least one display field should be added\""
+          }
+        ]
+      },
+      "steps": [
+        {
+          "action": "Fill the variant and Save",
+          "expected": "Variant message; report not saved"
+        }
+      ],
+      "expectedResult": "Report validations enforced",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/reports.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-089",
+      "title": "ESS user has no PIM menu and is denied direct PIM URLs",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P1",
+      "feature": "Access Control",
+      "requirementIds": [
+        "PIM-NFR-05"
+      ],
+      "roles": [
+        "ESS"
+      ],
+      "preconditions": [
+        "ESS user without subordinates created via API; logged in through a guest context"
+      ],
+      "testData": {
+        "urls": [
+          "/web/index.php/pim/viewEmployeeList",
+          "/web/index.php/pim/addEmployee",
+          "/web/index.php/pim/viewOptionalFields",
+          "/web/index.php/pim/viewDefinedPredefinedReports"
+        ]
+      },
+      "steps": [
+        {
+          "action": "Check the side menu",
+          "expected": "No PIM item"
+        },
+        {
+          "action": "Open each URL directly (OrangeHRM 5.9 has no /pim/viewOptionalFields, it returns 404; the Optional Fields page is /pim/configurePim)",
+          "expected": "Access denied (HTTP 403 \"Credential Required\") for viewEmployeeList, addEmployee, configurePim and viewDefinedPredefinedReports; no PIM data shown"
+        }
+      ],
+      "expectedResult": "ESS cannot use PIM",
+      "tags": [
+        "@negative",
+        "@security"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/access-control.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-UI-090",
+      "title": "Supervisor sees subordinate Job and Report-to read-only and cannot edit Salary",
+      "layer": "UI",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Access Control",
+      "requirementIds": [
+        "PIM-FR-015-AC4",
+        "PIM-FR-019-AC5"
+      ],
+      "roles": [
+        "Supervisor"
+      ],
+      "preconditions": [
+        "Supervisor with ESS login and a Direct subordinate created via API; supervisor logged in through a guest context"
+      ],
+      "steps": [
+        {
+          "action": "Open the subordinate Job tab",
+          "expected": "Fields are read-only; no Save, no Terminate Employment"
+        },
+        {
+          "action": "Open the Salary tab",
+          "expected": "No Salary tab for a supervisor and the Salary URL is denied (HTTP 403 \"Credential Required\"): no + Add or edit actions"
+        },
+        {
+          "action": "Open Personal Details",
+          "expected": "Editable with Save (supervisor may edit personal data)"
+        }
+      ],
+      "expectedResult": "Role matrix enforced for supervisors",
+      "tags": [
+        "@negative",
+        "@security"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/ui/pim/access-control.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-API-001",
+      "title": "POST employees with first and last name creates the employee and returns its empNumber",
+      "layer": "API",
+      "type": "Positive",
+      "priority": "P1",
+      "feature": "Employees API",
+      "requirementIds": [
+        "PIM-FR-005-AC3",
+        "PIM-BR-01"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "testData": {
+        "firstName": "Api",
+        "lastName": "Emp<unique>",
+        "employeeId": "<unique>"
+      },
+      "api": {
+        "method": "POST",
+        "endpoint": "/web/index.php/api/v2/pim/employees",
+        "expectedStatus": 200
+      },
+      "steps": [
+        {
+          "action": "POST the payload",
+          "expected": "200; data.empNumber is a number; names and employeeId echoed"
+        },
+        {
+          "action": "GET /pim/employees/{empNumber}",
+          "expected": "200 with the same values"
+        }
+      ],
+      "expectedResult": "Employee created via API",
+      "tags": [
+        "@smoke",
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/api/pim/employees-api.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-API-002",
+      "title": "POST employees without firstName or lastName is rejected with 422",
+      "layer": "API",
+      "type": "Negative",
+      "priority": "P1",
+      "feature": "Employees API",
+      "requirementIds": [
+        "PIM-BR-01",
+        "PIM-VAL-001",
+        "PIM-VAL-003"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "lastName": "X"
+          },
+          {
+            "firstName": "X"
+          },
+          {
+            "firstName": "",
+            "lastName": ""
+          }
+        ]
+      },
+      "api": {
+        "method": "POST",
+        "endpoint": "/web/index.php/api/v2/pim/employees",
+        "expectedStatus": 422
+      },
+      "steps": [
+        {
+          "action": "POST each variant",
+          "expected": "422 with invalidParamKeys naming the missing field; no employee created"
+        }
+      ],
+      "expectedResult": "Mandatory names enforced server-side",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/api/pim/employees-api.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-API-003",
+      "title": "POST employees enforces 30-character names and 10-character employeeId boundaries",
+      "layer": "API",
+      "type": "Edge",
+      "priority": "P2",
+      "feature": "Employees API",
+      "requirementIds": [
+        "PIM-VAL-001",
+        "PIM-VAL-004"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "firstName": "<30>",
+            "expect": 200
+          },
+          {
+            "firstName": "<31>",
+            "expect": 422
+          },
+          {
+            "employeeId": "<10>",
+            "expect": 200
+          },
+          {
+            "employeeId": "<11>",
+            "expect": 422
+          }
+        ]
+      },
+      "api": {
+        "method": "POST",
+        "endpoint": "/web/index.php/api/v2/pim/employees",
+        "expectedStatus": 422
+      },
+      "steps": [
+        {
+          "action": "POST each variant with otherwise valid data",
+          "expected": "Status equals the variant expectation; created ones are deleted"
+        }
+      ],
+      "expectedResult": "Length limits enforced server-side",
+      "tags": [
+        "@edge"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/api/pim/employees-api.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-API-004",
+      "title": "POST employees with an existing employeeId is rejected",
+      "layer": "API",
+      "type": "Negative",
+      "priority": "P1",
+      "feature": "Employees API",
+      "requirementIds": [
+        "PIM-VAL-004",
+        "PIM-BR-02"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Employee created via API"
+      ],
+      "api": {
+        "method": "POST",
+        "endpoint": "/web/index.php/api/v2/pim/employees",
+        "expectedStatus": 422
+      },
+      "steps": [
+        {
+          "action": "POST a new employee reusing the employeeId",
+          "expected": "422 (or 409) and no duplicate created"
+        }
+      ],
+      "expectedResult": "Employee Id uniqueness enforced server-side",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/api/pim/employees-api.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-API-005",
+      "title": "GET employees filters by nameOrId and includeEmployees",
+      "layer": "API",
+      "type": "Positive",
+      "priority": "P1",
+      "feature": "Employees API",
+      "requirementIds": [
+        "PIM-FR-002-AC1",
+        "PIM-FR-002-AC3",
+        "PIM-FR-002-AC7"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "One current and one past employee with a shared unique last name"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "includeEmployees": "onlyCurrent",
+            "expect": 1
+          },
+          {
+            "includeEmployees": "onlyPast",
+            "expect": 1
+          },
+          {
+            "includeEmployees": "currentAndPast",
+            "expect": 2
+          }
+        ]
+      },
+      "api": {
+        "method": "GET",
+        "endpoint": "/web/index.php/api/v2/pim/employees?nameOrId={id}&includeEmployees=onlyCurrent",
+        "expectedStatus": 200
+      },
+      "steps": [
+        {
+          "action": "GET with nameOrId = shared last name and the variant include",
+          "expected": "meta.total and data length equal the expectation"
+        }
+      ],
+      "expectedResult": "Server-side search filters correct",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/api/pim/employees-api.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-API-006",
+      "title": "GET employees honours limit, offset, sortField and sortOrder",
+      "layer": "API",
+      "type": "Edge",
+      "priority": "P2",
+      "feature": "Employees API",
+      "requirementIds": [
+        "PIM-FR-003-AC2",
+        "PIM-FR-003-AC3"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "api": {
+        "method": "GET",
+        "endpoint": "/web/index.php/api/v2/pim/employees?limit=5&offset=5&sortField=employee.lastName&sortOrder=ASC",
+        "expectedStatus": 200
+      },
+      "steps": [
+        {
+          "action": "GET page 1 and page 2 with limit 5",
+          "expected": "Each has <= 5 items, no overlap, meta.total equal"
+        },
+        {
+          "action": "GET sorted by lastName ASC and DESC",
+          "expected": "Items are ordered accordingly"
+        }
+      ],
+      "expectedResult": "Pagination and sorting contract holds",
+      "tags": [
+        "@edge"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/api/pim/employees-api.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-API-007",
+      "title": "DELETE employees with ids removes them; deleted ids return 404",
+      "layer": "API",
+      "type": "Positive",
+      "priority": "P1",
+      "feature": "Employees API",
+      "requirementIds": [
+        "PIM-FR-004-AC3",
+        "PIM-FR-004-AC4",
+        "PIM-BR-04"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Two employees created via API"
+      ],
+      "api": {
+        "method": "DELETE",
+        "endpoint": "/web/index.php/api/v2/pim/employees",
+        "expectedStatus": 200
+      },
+      "steps": [
+        {
+          "action": "DELETE with body { ids: [a, b] }",
+          "expected": "200; data contains both ids"
+        },
+        {
+          "action": "GET /pim/employees/{a}",
+          "expected": "404"
+        }
+      ],
+      "expectedResult": "Bulk delete via API works",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/api/pim/employees-api.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-API-008",
+      "title": "GET or DELETE a non-existent employee returns 404",
+      "layer": "API",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Employees API",
+      "requirementIds": [
+        "PIM-FR-004-AC3"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "method": "GET",
+            "path": "/pim/employees/999999999"
+          },
+          {
+            "method": "DELETE",
+            "body": {
+              "ids": [
+                999999999
+              ]
+            }
+          }
+        ]
+      },
+      "api": {
+        "method": "GET",
+        "endpoint": "/web/index.php/api/v2/pim/employees/999999999",
+        "expectedStatus": 404
+      },
+      "steps": [
+        {
+          "action": "Call each variant",
+          "expected": "404 with an error message containing \"Not Found\" (DELETE: \"Records Not Found\")"
+        }
+      ],
+      "expectedResult": "Not found handled",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/api/pim/employees-api.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-API-009",
+      "title": "Admin cannot delete their own employee record through the API",
+      "layer": "API",
+      "type": "Negative",
+      "priority": "P1",
+      "feature": "Employees API",
+      "requirementIds": [
+        "PIM-FR-004-AC6",
+        "PIM-BR-06"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "A dedicated Admin-role user linked to an employee created for this test (both deleted in teardown); its empNumber from GET /web/index.php/api/v2/pim/myself. The shared Admin record is never targeted."
+      ],
+      "api": {
+        "method": "DELETE",
+        "endpoint": "/web/index.php/api/v2/pim/employees",
+        "expectedStatus": 422
+      },
+      "steps": [
+        {
+          "action": "DELETE with the admin's own empNumber",
+          "expected": "Rejected (4xx); the admin employee still exists"
+        }
+      ],
+      "expectedResult": "Self-delete blocked server-side",
+      "tags": [
+        "@negative",
+        "@security"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/api/pim/employees-api.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-API-010",
+      "title": "PUT personal-details updates the employee and leaves job details unchanged",
+      "layer": "API",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Employee Details API",
+      "requirementIds": [
+        "PIM-FR-008-AC4",
+        "PIM-NFR-01"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Employee with job title created via API"
+      ],
+      "testData": {
+        "firstName": "Upd",
+        "lastName": "Emp<unique>",
+        "gender": 1,
+        "maritalStatus": "Married",
+        "birthday": "1990-06-15",
+        "nationalityId": "<id>"
+      },
+      "api": {
+        "method": "PUT",
+        "endpoint": "/web/index.php/api/v2/pim/employees/{empNumber}/personal-details",
+        "expectedStatus": 200
+      },
+      "steps": [
+        {
+          "action": "PUT the payload",
+          "expected": "200 with updated values"
+        },
+        {
+          "action": "GET personal-details and job-details",
+          "expected": "Personal values persisted; job title unchanged"
+        }
+      ],
+      "expectedResult": "Personal details API contract holds",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/api/pim/employee-details-api.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-API-011",
+      "title": "PUT contact-details rejects malformed and duplicate emails",
+      "layer": "API",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Employee Details API",
+      "requirementIds": [
+        "PIM-FR-011-AC3",
+        "PIM-FR-011-AC4",
+        "PIM-VAL-014"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Two employees; the second has a known work email"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "workEmail": "not-an-email"
+          },
+          {
+            "workEmail": "<second employee email>"
+          },
+          {
+            "workEmail": "x<u>@e.com",
+            "otherEmail": "x<u>@e.com"
+          }
+        ]
+      },
+      "api": {
+        "method": "PUT",
+        "endpoint": "/web/index.php/api/v2/pim/employee/{empNumber}/contact-details",
+        "expectedStatus": 422
+      },
+      "steps": [
+        {
+          "action": "PUT each variant",
+          "expected": "422; stored contact details unchanged"
+        }
+      ],
+      "expectedResult": "Email rules enforced server-side",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/api/pim/employee-details-api.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-API-012",
+      "title": "Emergency contacts and dependents support create, list and bulk delete",
+      "layer": "API",
+      "type": "Positive",
+      "priority": "P2",
+      "feature": "Employee Records API",
+      "requirementIds": [
+        "PIM-FR-012-AC2",
+        "PIM-FR-012-AC3",
+        "PIM-FR-013-AC2"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Employee created via API"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "resource": "emergency-contacts",
+            "body": {
+              "name": "Jane",
+              "relationship": "Sister",
+              "mobilePhone": "0771234567"
+            }
+          },
+          {
+            "resource": "dependents",
+            "body": {
+              "name": "Kid",
+              "relationshipType": "child",
+              "dateOfBirth": "2015-03-10"
+            }
+          }
+        ]
+      },
+      "api": {
+        "method": "POST",
+        "endpoint": "/web/index.php/api/v2/pim/employees/{empNumber}/emergency-contacts",
+        "expectedStatus": 200
+      },
+      "steps": [
+        {
+          "action": "POST two records for the variant resource",
+          "expected": "200 each"
+        },
+        {
+          "action": "GET the collection",
+          "expected": "meta.total = 2 with the posted values"
+        },
+        {
+          "action": "DELETE with { ids: [...] }",
+          "expected": "200; collection empty"
+        }
+      ],
+      "expectedResult": "Record sub-resources behave consistently",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/api/pim/employee-records-api.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-API-013",
+      "title": "POST emergency contact without any telephone number is rejected",
+      "layer": "API",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Employee Records API",
+      "requirementIds": [
+        "PIM-FR-012-AC1",
+        "PIM-VAL-016"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Employee created via API"
+      ],
+      "testData": {
+        "name": "Jane",
+        "relationship": "Sister"
+      },
+      "api": {
+        "method": "POST",
+        "endpoint": "/web/index.php/api/v2/pim/employees/{empNumber}/emergency-contacts",
+        "expectedStatus": 422
+      },
+      "steps": [
+        {
+          "action": "POST without homePhone, mobilePhone and officePhone",
+          "expected": "422; nothing stored"
+        }
+      ],
+      "expectedResult": "At-least-one-phone rule enforced server-side",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/api/pim/employee-records-api.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-API-014",
+      "title": "Terminating and re-activating via API moves the employee between current and past lists",
+      "layer": "API",
+      "type": "Positive",
+      "priority": "P1",
+      "feature": "Employee Records API",
+      "requirementIds": [
+        "PIM-FR-017-AC1",
+        "PIM-FR-017-AC3",
+        "PIM-FR-018-AC1",
+        "PIM-BR-05"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Employee created via API; a termination reason id from /pim/termination-reasons"
+      ],
+      "api": {
+        "method": "POST",
+        "endpoint": "/web/index.php/api/v2/pim/employees/{empNumber}/terminations",
+        "expectedStatus": 200
+      },
+      "steps": [
+        {
+          "action": "POST termination { date, terminationReasonId, note }",
+          "expected": "200"
+        },
+        {
+          "action": "GET employees?nameOrId={id}&includeEmployees=onlyPast",
+          "expected": "Employee returned with termination data"
+        },
+        {
+          "action": "DELETE /pim/employees/{empNumber}/terminations",
+          "expected": "200; employee back in onlyCurrent"
+        }
+      ],
+      "expectedResult": "Termination lifecycle API works",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/api/pim/employee-records-api.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-API-015",
+      "title": "POST immigration with expiry date before issued date is rejected",
+      "layer": "API",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Employee Records API",
+      "requirementIds": [
+        "PIM-FR-014-AC3",
+        "PIM-VAL-019"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Employee created via API"
+      ],
+      "testData": {
+        "number": "P123",
+        "type": 1,
+        "issuedDate": "2025-01-01",
+        "expiryDate": "2024-01-01"
+      },
+      "api": {
+        "method": "POST",
+        "endpoint": "/web/index.php/api/v2/pim/employees/{empNumber}/immigrations",
+        "expectedStatus": 422
+      },
+      "steps": [
+        {
+          "action": "POST the payload",
+          "expected": "422; no record stored"
+        }
+      ],
+      "expectedResult": "Date order enforced server-side",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/api/pim/employee-records-api.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-API-016",
+      "title": "Salary amount outside the pay grade range is rejected by the API",
+      "layer": "API",
+      "type": "Negative",
+      "priority": "P1",
+      "feature": "Employee Records API",
+      "requirementIds": [
+        "PIM-FR-019-AC2",
+        "PIM-BR-09"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Employee and a Pay Grade with USD 1000-5000 created via API"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "amount": 999,
+            "expect": 422
+          },
+          {
+            "amount": 5001,
+            "expect": 422
+          },
+          {
+            "amount": 3000,
+            "expect": 200
+          }
+        ]
+      },
+      "api": {
+        "method": "POST",
+        "endpoint": "/web/index.php/api/v2/pim/employees/{empNumber}/salaries",
+        "expectedStatus": 422
+      },
+      "steps": [
+        {
+          "action": "POST salary component with the pay grade, USD and the variant amount",
+          "expected": "Status equals the variant expectation"
+        }
+      ],
+      "expectedResult": "Pay grade range enforced server-side",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/api/pim/employee-records-api.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-API-017",
+      "title": "Supervisors API rejects self-assignment and duplicate relations",
+      "layer": "API",
+      "type": "Negative",
+      "priority": "P1",
+      "feature": "Employee Records API",
+      "requirementIds": [
+        "PIM-FR-021-AC2",
+        "PIM-FR-021-AC3",
+        "PIM-BR-08"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Two employees; a Direct relation between them created via API"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "supervisor": "self"
+          },
+          {
+            "supervisor": "existing supervisor again"
+          }
+        ]
+      },
+      "api": {
+        "method": "POST",
+        "endpoint": "/web/index.php/api/v2/pim/employees/{empNumber}/supervisors",
+        "expectedStatus": 422
+      },
+      "steps": [
+        {
+          "action": "POST each variant with reportingMethodId = Direct",
+          "expected": "4xx; relation count unchanged"
+        }
+      ],
+      "expectedResult": "Report-to integrity enforced server-side",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/api/pim/employee-records-api.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-API-018",
+      "title": "Reporting methods and termination reasons reject blank, duplicate and 101-character names",
+      "layer": "API",
+      "type": "Negative",
+      "priority": "P2",
+      "feature": "Configuration API",
+      "requirementIds": [
+        "PIM-FR-027-AC1",
+        "PIM-FR-028-AC1",
+        "PIM-VAL-036"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Logged in as Admin"
+      ],
+      "testData": {
+        "resources": [
+          "reporting-methods",
+          "termination-reasons"
+        ],
+        "variants": [
+          {
+            "name": ""
+          },
+          {
+            "name": "<existing>"
+          },
+          {
+            "name": "<101 chars>"
+          }
+        ]
+      },
+      "api": {
+        "method": "POST",
+        "endpoint": "/web/index.php/api/v2/pim/reporting-methods",
+        "expectedStatus": 422
+      },
+      "steps": [
+        {
+          "action": "POST each variant to each resource",
+          "expected": "422; nothing created"
+        }
+      ],
+      "expectedResult": "Lookup lists validated server-side",
+      "tags": [
+        "@negative"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/api/pim/configuration-api.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-API-019",
+      "title": "Optional field settings can be read and updated, and restored afterwards",
+      "layer": "API",
+      "type": "Positive",
+      "priority": "P3",
+      "feature": "Configuration API",
+      "requirementIds": [
+        "PIM-FR-024-AC1",
+        "PIM-BR-12"
+      ],
+      "roles": [
+        "Admin"
+      ],
+      "preconditions": [
+        "Current settings captured first and restored in teardown"
+      ],
+      "api": {
+        "method": "PUT",
+        "endpoint": "/web/index.php/api/v2/pim/optional-field",
+        "expectedStatus": 200
+      },
+      "steps": [
+        {
+          "action": "GET optional-field",
+          "expected": "200 with pimShowDeprecatedFields, showSIN, showSSN, showTaxExemptions (booleans)"
+        },
+        {
+          "action": "PUT with showSsn toggled",
+          "expected": "200 echoing the body; GET reflects the change"
+        },
+        {
+          "action": "Restore original settings",
+          "expected": "200; GET equals the settings read at the start"
+        }
+      ],
+      "expectedResult": "Optional field API contract holds",
+      "tags": [
+        "@positive"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/api/pim/optional-fields-api.spec.ts"
+      }
+    },
+    {
+      "id": "PIM-API-020",
+      "title": "ESS session cannot list, create or delete employees through the PIM API",
+      "layer": "API",
+      "type": "Negative",
+      "priority": "P1",
+      "feature": "Access Control API",
+      "requirementIds": [
+        "PIM-NFR-05"
+      ],
+      "roles": [
+        "ESS"
+      ],
+      "preconditions": [
+        "ESS user created via API and logged in over HTTP"
+      ],
+      "testData": {
+        "variants": [
+          {
+            "method": "GET",
+            "path": "/pim/employees"
+          },
+          {
+            "method": "POST",
+            "path": "/pim/employees"
+          },
+          {
+            "method": "DELETE",
+            "path": "/pim/employees"
+          }
+        ]
+      },
+      "api": {
+        "method": "GET",
+        "endpoint": "/web/index.php/api/v2/pim/employees",
+        "expectedStatus": 403
+      },
+      "steps": [
+        {
+          "action": "Call each variant with the ESS session",
+          "expected": "GET: 200 with empty data (or 403); POST and DELETE: 403 {\"error\":{\"status\":403,\"message\":\"Unauthorized\"}}; no data change"
+        }
+      ],
+      "expectedResult": "PIM API enforces role permissions",
+      "tags": [
+        "@negative",
+        "@security"
+      ],
+      "automation": {
+        "status": "Automated",
+        "spec": "tests/api/pim/access-control-api.spec.ts"
+      }
+    }
+  ]
+}
